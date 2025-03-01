@@ -117,7 +117,7 @@ export default function ProductPage() {
                         </div>
                         <Link href={product.url} target="_blank" rel="noopener noreferrer">
                             <button className="bg-red-600 text-white cursor-pointer text-center rounded-lg py-2 px-4 font-medium hover:bg-red-700 transition duration-100">
-                                <p>Check Product</p>
+                                <p>Buy Product</p>
                             </button>
                         </Link>
                     </div>
