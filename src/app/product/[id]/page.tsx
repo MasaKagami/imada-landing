@@ -87,6 +87,25 @@ const products = [
     },
 ];
 
+const trackButtonClick = (productName: string) => {
+    
+    // Check if Google Analytics is loaded
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+        // Check if the user has already clicked in this session
+        if (!sessionStorage.getItem(`clicked_${productName}`)) {
+            window.gtag("event", "buy_product", {
+                event_category: "engagement",
+                event_label: productName,
+            });
+
+            // Mark as clicked in session storage
+            sessionStorage.setItem(`clicked_${productName}`, "true");
+        }
+    } else {
+        console.warn("Google Analytics (gtag) is not loaded yet.");
+    }
+};
+
 export default function ProductPage() {
     const params = useParams();
     const [product, setProduct] = useState<Product | null>(null); // Initially null to prevent hydration issues
@@ -116,7 +135,10 @@ export default function ProductPage() {
                             <h1 className="text-sm font-normal">{product.notes}</h1>
                         </div>
                         <Link href={product.url} target="_blank" rel="noopener noreferrer">
-                            <button className="bg-red-600 text-white cursor-pointer text-center rounded-lg py-2 px-4 font-medium hover:bg-red-700 transition duration-100">
+                            <button 
+                                className="bg-red-600 text-white cursor-pointer text-center rounded-lg py-2 px-4 font-medium hover:bg-red-700 transition duration-100"
+                                onClick={() => trackButtonClick(product.name)}
+                            >
                                 <p>Buy Product</p>
                             </button>
                         </Link>
@@ -151,4 +173,4 @@ export default function ProductPage() {
             <Footer/>
         </div>
     );
-  }
+}
