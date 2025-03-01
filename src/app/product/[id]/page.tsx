@@ -31,7 +31,7 @@ const products = [
         capacity :"2ml/12ml/25ml",
         url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119"
     },
-    { id: 2, name: "Imada Seasons Safe Oil", image: "/imada-2.webp", 
+    { id: 2, name: "Imada Seasons Safe Balm", image: "/imada-2.webp", 
         usage: "For fractures and injuries and external pain, rub the oil on the affected area will bring immediate relief. For burns and cuts, continuous bleeding, quickly apply cotton wool soaked with this oil to cover the injured part. It will insatnatly stop bleeding and inflamation.", 
         function: "Headache, Stomach-Ache, Mental Tiredness, Sun-Stroke, Sea-Sickness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles etc.", 
         info:"This medicated oil is prepared from precious Chinese herbs and is processed under traditional method. Its powerful medicinal ingredients provide efficient treatment for many diseases with remarkable results.", 
