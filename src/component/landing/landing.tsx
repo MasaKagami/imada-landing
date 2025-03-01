@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Carousel from "./carousel";
 
 const products = [
     { id: 1, name: "Imada Seasons Safe Oil", image: "/imada-1.webp" },
@@ -13,20 +14,24 @@ const products = [
 
 const Landing = () => {
     return(
-        <main className="w-screen max-w-[90%] sm:max-w-[80%] mt-10 mb-20 m-auto flex flex-col items-center gap-6">
-            <h1 className="text-3xl font-bold">Our Products</h1>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-6">
-                {products.map((product) => (
-                    <div key={product.id} className="flex flex-col border-gray-300 border p-4 gap-2">
-                        <Image src={product.image} alt={product.name} width={300} height={0} style={{height:"auto"}}/>
-                        <p className="font-medium">{product.name}</p>
-                        <Link href={`/product/${product.id}`} className="w-full">
-                            <button className="w-full bg-red-600 text-white cursor-pointer text-center rounded-lg py-2 font-medium hover:bg-red-700 transition duration-100">
-                                <p>Check Product</p>
-                            </button>
-                        </Link>
-                    </div>
-                ))}
+        <main className="w-screen mb-20 m-auto flex flex-col items-center">
+            {/* landing page carousel code here*/}
+            <Carousel/>
+            <div className="max-w-[90%] sm:max-w-[80%] w-full mt-10 flex flex-col items-center gap-6">
+                <h1 className="text-3xl font-bold">Our Products</h1>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-6">
+                    {products.map((product) => (
+                        <div key={product.id} className="flex flex-col border-gray-300 border p-4 gap-2">
+                            <Image src={product.image} alt={product.name} width={300} height={0} style={{height:"auto"}}/>
+                            <p className="font-medium">{product.name}</p>
+                            <Link href={`/product/${product.id}`} className="w-full">
+                                <button className="w-full bg-red-600 text-white cursor-pointer text-center rounded-lg py-2 font-medium hover:bg-red-700 transition duration-100">
+                                    <p>Check Product</p>
+                                </button>
+                            </Link>
+                        </div>
+                    ))}
+                </div>
             </div>
         </main>
     );
