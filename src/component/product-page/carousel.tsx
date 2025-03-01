@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const products = [
   { id: 1, name: "Imada Seasons Safe Oil", image: "/imada-1.webp", url: "/product/1" },
-  { id: 2, name: "Imada Seasons Safe Oil", image: "/imada-2.webp", url: "/product/2" },
+  { id: 2, name: "Imada Seasons Safe Balm", image: "/imada-2.webp", url: "/product/2" },
   { id: 3, name: "Imada Red Flower Oil", image: "/imada-3.webp", url: "/product/3" },
   { id: 4, name: "Imada Hotdrug Oil", image: "/imada-4.webp", url: "/product/4" },
   { id: 5, name: "Imada Sze Chi Healing Oil", image: "/imada-5.webp", url: "/product/5" },
