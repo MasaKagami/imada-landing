@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+html, body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-montserrat, sans-serif);
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+}
