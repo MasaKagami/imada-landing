@@ -197,7 +197,15 @@ export default function ProductPage() {
         }
       }, [params.id]);
   
-    if (!product) return <p className="text-center mt-10">Loading product...</p>; // Prevents hydration mismatch
+    if (!product) return (
+        <div className="w-screen min-h-screen">
+            <Navbar/>
+                <div className="h-full w-full justify-center items-center">
+                    <p className="text-center mt-10">Loading product...</p>
+                </div>
+            {/* <Footer/> */}
+        </div>
+        ); // Prevents hydration mismatch
   
     return (
         <div className="w-screen min-h-screen">
