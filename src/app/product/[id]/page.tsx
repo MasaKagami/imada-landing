@@ -222,9 +222,14 @@ export default function ProductPage() {
                                 ))}
                             </div>
                         </div>
-                        <Link href={product.url} target="_blank" rel="noopener noreferrer">
+                        <Link 
+                            href={product.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="inline-flex max-w-36"
+                        >
                             <button 
-                                className="bg-red-600 text-white cursor-pointer text-center rounded-lg py-2 px-4 font-medium hover:bg-red-700 transition duration-100"
+                                className="bg-red-600 inline-flex text-white cursor-pointer text-center rounded-lg py-2 px-4 font-medium hover:bg-red-700 transition duration-100"
                                 onClick={() => trackButtonClick(product.name)}
                             >
                                 <p>Buy Product</p>
