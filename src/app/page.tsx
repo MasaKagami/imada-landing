@@ -6,7 +6,7 @@ import Navbar from "@/component/navbar/navbar";
 
 export default function Home() {
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen overflow-x-hidden">
       <Navbar/>
       <Landing/>
       <Footer/>

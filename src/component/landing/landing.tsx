@@ -14,7 +14,7 @@ const products = [
 
 const Landing = () => {
     return(
-        <main className="w-screen mb-20 m-auto flex flex-col items-center">
+        <main className="w-full mb-20 m-auto flex flex-col items-center ">
             {/* landing page carousel code here*/}
             <Carousel/>
             <div className="max-w-[90%] sm:max-w-[80%] w-full mt-10 flex flex-col items-center gap-6">

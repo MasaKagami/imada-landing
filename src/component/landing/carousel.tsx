@@ -33,10 +33,10 @@ const Carousel = () => {
         {/* Images */}
         <div 
             className="h-full flex transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100*1/3}%)` }}
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
             {carouselImages.map((image, index) => (
-                <div key={index} className="w-screen flex-shrink-0 flex items-center justify-center">
+                <div key={index} className="w-full flex-shrink-0 flex items-center justify-center">
                     <Image 
                     src={image} 
                     alt={`Slide ${index + 1}`} 
