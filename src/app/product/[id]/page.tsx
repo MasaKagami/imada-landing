@@ -167,6 +167,12 @@ const conditionIcons: { [key: string]: JSX.Element } = {
     ),
 };
 
+declare global {
+  interface Window {
+    fbq: (...args: [method: string, eventName: string, params?: Record<string, unknown>]) => void;
+  }
+}
+
 const trackButtonClick = (productName: string) => {
     
     // Check if Google Analytics is loaded
@@ -183,6 +189,15 @@ const trackButtonClick = (productName: string) => {
         }
     } else {
         console.warn("Google Analytics (gtag) is not loaded yet.");
+    }
+
+      // Meta Pixel Custom Event Tracking
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        window.fbq('trackCustom', 'BuyButtonClick', {
+        product_name: productName,
+        });
+    } else {
+        console.warn("Meta Pixel (fbq) is not loaded.");
     }
 };
 
