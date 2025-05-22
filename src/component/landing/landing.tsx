@@ -4,11 +4,11 @@ import Carousel from "./carousel";
 
 const products = [
     { id: 1, name: "Imada Seasons Safe Oil", image: "/imada-1.webp" },
-    { id: 2, name: "Imada Seasons Safe Balm", image: "/imada-2.webp" },
+    // { id: 2, name: "Imada Seasons Safe Balm", image: "/imada-2.webp" },
     { id: 3, name: "Imada Red Flower Oil", image: "/imada-3.webp" },
     { id: 4, name: "Imada Hotdrug Oil", image: "/imada-4.webp" },
     { id: 5, name: "Imada Sze Chi Healing Oil", image: "/imada-5.webp" },
-    { id: 6, name: "Imada Gold Dragon Oil", image: "/imada-6.webp" },
+    // { id: 6, name: "Imada Gold Dragon Oil", image: "/imada-6.webp" },
     { id: 7, name: "Snake Porous Capsicum Plaster", image: "/imada-7.webp" },
   ];
 

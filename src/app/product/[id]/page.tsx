@@ -30,19 +30,19 @@ const products = [
         ingredients: "Menthol, Camphora, Clove Leaf Oil, Cinnamon Leaf Oil, Cinnamic Aldehyde, Radix Angelicae Sinensis, Herba Patchouli, Radix Glycyrrhizae, Sanguis Draconis, Peppermint Oil. Most ingredients are natural substances and in line with international standards.", 
         notes: "For External Use Only. Not to be Taken. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
         capacity :"2ml/12ml/25ml",
-        url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
+        url : "https://detail.tmall.hk/hk/item.htm?spm=a21xtw.29178619.product_shelf.4.28f237d0k4sc5j&id=618560991013&pisk=gv0S24qjtv32kWUdOuA41rRg_G4IOI8Zv6NKsXQP9zUJJeMqd2Ro9JuQRxDYvvkzyJCIHXeRY0RlpxlKe8yE92PKRz0q4wyyEyGKQy9wQF8ZZb4uJdJNd4IyuPF5v7BUviUY8WaqWHp-Zb43psWpbmhlO-z3K6FLpIaYOW2LJkE8HINUOTULekBAD5eYJyFLeSBYO5WLwyHdDrFu1Med2gUxMWP3JJHL2sCYnWULwvUK615Qgd2mNQ2cK36f13i8hwQKlSOuBbT58Sg4NfwswXoZfq_gVRh8hwpMehM3H5gvKTynlj38txLVPyGYOAa-cKQSdbniK5HJlTFS2fGac2vORSmxEoPScBIYefezy-gHtw2-4X3UA4pOT83oUqZi-T94LclqyoM93ZM3A0nTy296kgRl7RG3tM1bjwNbQIOfxMXrku4QFk4YuuF0g3RXGGrQ2SVXNIOfxMq8iSPkGIsaA",
         conditions: ["inflammation", "blood_circulation", "back_pain"]
     },
-    { id: 2, name: "Imada Seasons Safe Balm", image: "/imada-2.webp", 
-        usage: "For fractures and injuries and external pain, rub the oil on the affected area will bring immediate relief. For burns and cuts, continuous bleeding, quickly apply cotton wool soaked with this oil to cover the injured part. It will insatnatly stop bleeding and inflammation.", 
-        function: "Headache, Stomach-Ache, Mental Tiredness, Sun-Stroke, Sea-Sickness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles etc.", 
-        info:"This medicated oil is prepared from precious Chinese herbs and is processed under traditional method. Its powerful medicinal ingredients provide efficient treatment for many diseases with remarkable results.", 
-        ingredients: "Menthol, Camphora, Clove Leaf Oil, Cinnamon Leaf Oil, Cinnamic Aldehyde, Radix Angelicae Sinensis, Herba Patchouli, Radix Glycyrrhizae, Sanguis Draconis, Peppermint Oil. Most ingredients are natural substances and in line with international standards.", 
-        notes: "For External Use Only. Not to be Taken. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
-        capacity :"3g/20g",
-        url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
-        conditions: ["inflammation", "blood_circulation", "pain"]
-    },
+    // { id: 2, name: "Imada Seasons Safe Balm", image: "/imada-2.webp", 
+    //     usage: "For fractures and injuries and external pain, rub the oil on the affected area will bring immediate relief. For burns and cuts, continuous bleeding, quickly apply cotton wool soaked with this oil to cover the injured part. It will insatnatly stop bleeding and inflammation.", 
+    //     function: "Headache, Stomach-Ache, Mental Tiredness, Sun-Stroke, Sea-Sickness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles etc.", 
+    //     info:"This medicated oil is prepared from precious Chinese herbs and is processed under traditional method. Its powerful medicinal ingredients provide efficient treatment for many diseases with remarkable results.", 
+    //     ingredients: "Menthol, Camphora, Clove Leaf Oil, Cinnamon Leaf Oil, Cinnamic Aldehyde, Radix Angelicae Sinensis, Herba Patchouli, Radix Glycyrrhizae, Sanguis Draconis, Peppermint Oil. Most ingredients are natural substances and in line with international standards.", 
+    //     notes: "For External Use Only. Not to be Taken. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
+    //     capacity :"3g/20g",
+    //     url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
+    //     conditions: ["inflammation", "blood_circulation", "pain"]
+    // },
     { id: 3, name: "Imada Red Flower Oil", image: "/imada-3.webp", 
         usage: "Apply appropriate amount on the affected area.", 
         function: "Reduce inflammation and pain. Improve circulation and fend off coldness. Reduce swelling and pain. Reduce muscle pain and joint pain. Temporarily relieves pain caused by bruise and impact injury.", 
@@ -50,7 +50,7 @@ const products = [
         ingredients: "Methyl Salicylate, Cinnamon Leaf Oil, Sanguis Draconis, Flos Carthami. Most ingredients are natural substances and in line with international standards.", 
         notes: "For External Use Only. Not to be Taken. Children suffering from Influenza, Chickenpox, or fever should avoid using products containing methyl salicylate and if persons allergic to salicylic acid should consult your doctor before using thie product. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
         capacity :"12ml/25ml/50ml/100ml",
-        url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
+        url : "https://detail.tmall.hk/hk/item.htm?spm=a21xtw.29178619.product_shelf.6.28f237d0k4sc5j&id=620626369182&pisk=gBUo21aCcx9s0IBxDrg5jKg65AsAP4gIeJLKp2HF0xkXw7FRVX0nn5oRNJeLmB2rhUeKy2eDY8eMeTM8JJVEn88K2yVB-XPUd_MdNiF7N2gFBOUhW7NScAtHNzmEgIPjsv-FD05osy4CBOQO-gRq-TXTp7WAnili_2lrYYPViXcHz2or4n5mTXpyYUyFisciOeJrYXRquXM2YXuETm-qTfdraeoFiSkj9bJUL25muxGEsr8ZeSFgutO9UtRuhQqIZ0DaaY2Lpr7n43N-ny4Uub49M7DmMjUmZ0DZcUyqXPVaaPG3R1-nKWEzejwhSt04r84rm2bHl4Fg08m0q9YmcoP_8mqfIhN_a8qZbz7cMJ241lgzz9T-FkP48xUP9eDaX5gmGyBXzvq4YznSRLWoizVg-kjPRn-wXSTIg6U2AHirGjDTlj7lzZuGXa1cihoj4jGP4sfDAWorGjDOisxwM0ljag5..",
         conditions: ["inflammation", "blood_circulation", "pain"]
     },
     { id: 4, name: "Imada Hotdrug Oil", image: "/imada-4.webp", 
@@ -60,7 +60,7 @@ const products = [
         ingredients: "Oil of Clove, Oil of Citronellal, Camphor, Menthol Crystals, Eucalyptus Oil, Oil of Turpentine, Oil of White, Menthyl Salicylate. Most ingredients are natural substances and in line with international standards.", 
         notes: "For External Use Only. Not to be Taken. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
         capacity :"20ml/40ml",
-        url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
+        url : "https://detail.tmall.hk/hk/item.htm?spm=a21xtw.29178619.product_shelf.5.28f237d0k4sc5j&id=618723695891&pisk=gT9IqG16qUpaIOB8V6mNcOoc0SX5dck2wusJm3eU29BKeYTwPLoH2aJ5FFYOwU8FpaEWW3QLaBo3yF-JJw7y2LSJF9vwT87E-TtJuTgquxk2xHXhequ4PpFEQ9j52geLz1QOcTsdQqGRSHXle4ZaejkXxeb6d_PR2Gn14gydyUCRBNQGVMEpywCTWisceTLR2NIODgP8y6B-f5IPvyIRJgHTBMjCvTBJyOKOYNQRe6LJXf3YVGucSHihSzcQ5fMDTNw8edssxZKIZ8S6dM6llHKyEKv_n6_vvNw-o2hXrNIXB44Frdt9pgYtQJ6WXgTfpCgTdUtpiUjvJAadABKX019ok8sM6efNACi86wKA89Q6E02lJB-JU_9Kku7pKeJ1iL4I7aR2bpC6kVy6r_OpM9pSlAIPr-7XqgV7fs25fZosf7Vu8dChFw1lBO5djGlEfcNVN6IGfDisf7Vl9GjNxci_g_1..",
         conditions: ["mind", "blood_circulation", "joint"]
     },
     { id: 5, name: "Imada Sze Chi Healing Oil", image: "/imada-5.webp", 
@@ -70,19 +70,19 @@ const products = [
         ingredients: "Camphor, Eucalyptus Oil, Oil of Citronellal, Tea oil, Menthol. Most ingredients are natural substances and in line with international standards.", 
         notes: "For External Use Only. Not to be Taken. Avoid touching eyes.", 
         capacity :"25ml",
-        url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
+        url : "https://detail.tmall.hk/hk/item.htm?spm=a21xtw.29178619.product_shelf.2.28f237d0k4sc5j&id=618208449894&pisk=gJnn2YmW551fNwdTWcZBo1ZfcST9dkZ79bI8wuFy75P1pvHpR8qusxzpdbh-STcU1Mh8vuhGzXhc9BNK2bDzsXS8J0D5q8krNpNJdFHIduZyMInkDvMQ5S_ldDVebPk_ew7eWyJ3n0mWMIKvqeWaqBAxwvR9zFy03uyUzWkwI82lYuzUzAJgU8CFzMlyId20Fg5Uz8Wab8NNzJSzzAWah-WFawPyIAP_E7yrauJgb5wr6Is49AHmbC6ATCW3lUhTKyVqLWc-wc5QRwMgsZ7mjjBzav754gogKymWS3vpeuuEpf4x-Ij3DvujN-lFTB2ixxmouf-OxuDZu0qZbCWTTqMiqkneeHrZxXmUSbW55yuj9qziXBj_gVkieP06FwF-l8l7l0dfAWkrhmgYm3XuIqDajgRC7Z7xCgwwec75Pyy_ISn_QHxeboYvAdvGuPaUCJ8eIdbSUyy_ISpMIZWT8Rwe8",
         conditions: ["pain", "bacteria"]
     },
-    { id: 6, name: "Imada Gold Dragon Oil", image: "/imada-6.webp", 
-        usage: "Headache, Stomach-Ache, Mental Tiredness, Sea-Sickness, Drunkenness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles, Burns & Scald.", 
-        function: "Headache, Stomach-Ache, Mental Tiredness, Sun-Stroke, Sea-Sickness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles etc.", 
-        info: "This embrocation is prepared by the pharmaceutical processes by combining different kinds of plant extracts from different parts of the world. It is pure in colour with pleasant smell, and is entirely free from drastic substances. It does not grease clothes and at the same time, is neutral to the skin so as to produce osmotic effect on the cells to promote the regularity of blood circulation. It is recuperative to pains and preventive against epidemics and contagious diseases. It is the first aid to all emergencies and is suited for all external ailments without any side effect.", 
-        ingredients: "Methyl Salicyate, Eucalyptus Oil, Menthol Crystals, Peppermint, Camphor and Essential Oil. Most ingredients are natural substances and in line with international standards.", 
-        notes: "For External Use Only. Not to be Taken. Children suffering from Influenza, Chickenpox, or fever should avoid using products containing methyl salicylate and if persons allergic to salicylic acid should consult your doctor before using thie product. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
-        capacity :"2ml/5ml/10ml/20ml",
-        url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
-        conditions: ["mind", "inflammation"]
-    },
+    // { id: 6, name: "Imada Gold Dragon Oil", image: "/imada-6.webp", 
+    //     usage: "Headache, Stomach-Ache, Mental Tiredness, Sea-Sickness, Drunkenness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles, Burns & Scald.", 
+    //     function: "Headache, Stomach-Ache, Mental Tiredness, Sun-Stroke, Sea-Sickness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles etc.", 
+    //     info: "This embrocation is prepared by the pharmaceutical processes by combining different kinds of plant extracts from different parts of the world. It is pure in colour with pleasant smell, and is entirely free from drastic substances. It does not grease clothes and at the same time, is neutral to the skin so as to produce osmotic effect on the cells to promote the regularity of blood circulation. It is recuperative to pains and preventive against epidemics and contagious diseases. It is the first aid to all emergencies and is suited for all external ailments without any side effect.", 
+    //     ingredients: "Methyl Salicyate, Eucalyptus Oil, Menthol Crystals, Peppermint, Camphor and Essential Oil. Most ingredients are natural substances and in line with international standards.", 
+    //     notes: "For External Use Only. Not to be Taken. Children suffering from Influenza, Chickenpox, or fever should avoid using products containing methyl salicylate and if persons allergic to salicylic acid should consult your doctor before using thie product. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
+    //     capacity :"2ml/5ml/10ml/20ml",
+    //     url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
+    //     conditions: ["mind", "inflammation"]
+    // },
     { id: 7, name: "Snake Porous Capsicum Plaster", image: "/imada-7.webp", 
         usage: "Cut plaster into the size as needed. Apply tightly on clean and dry affected area. Each application can last for 2 to 3 days. Re-apply a new plaster on the same area if is needed.", 
         function: "Lambago, Backache, Muscle Fatigue, Bruises, Sprain.", 
@@ -90,7 +90,7 @@ const products = [
         ingredients: "Capsicum, Natural Resin, Zinc Oxide, White Wax, Soybean Oil, Beeswax. Most ingredients are natural substances and in line with international standards.", 
         notes: "For external use only. Please do not apply plaster on wounds or damaged allergic skin. Pregnant women and children, please use plaster with cautions. If you have sensitive skin, consult a doctore before use.", 
         capacity :"5pcs/box  24pcs/box",
-        url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
+        url : "https://detail.tmall.hk/hk/item.htm?spm=a21xtw.29178619.product_shelf.1.28f237d0k4sc5j&id=617918428676&pisk=gU9S2a1XxepVVbBLA_mVftoGb5XCNmkw9kspjHezvTB-pvT2RpokvwJCdEYA9e8PewEBkHQ8TQouJE-pya7evpSpdTv2aJ7rr9tp79gZ7Akwq3XlpVuaRLFr3OIUJMUFy-IALM62BX3Jq3XhJozK_IKuAZWHWkIdJm6AAMbdp6CRkmsFYMBdy6UYMGQAp9IdyiUAAGzd29LLMtIOVgUdJ6EYMGINpwLd2xQAoMBd2eBK6xEC0VbDV0b0-bajF8OflJephiilW3auKiplVE_62H-yxKwGNNKRlJ3iyfThkG9x-z7HhnpRxEH4F9tAAF6JGqeWR3dM-GL-hzIWwhtNGp0TdiAvrsSWGDFAyhQPeZ9nxJbJaHpFOL3TYapkzK1MKzgV8C-2esTtu-ThOQdOepgsHgluQNthxWZfsJsf7mibtW4yH_XCP6XA3_Ic0bojc55CwijjVmibtWfRmiSocmNNO",
         conditions: ["back_pain", "pain"]
     },
 ];
@@ -225,10 +225,23 @@ export default function ProductPage() {
     return (
         <div className="w-screen min-h-screen">
             <Navbar/>
-            <main className="w-full max-w-[90%] sm:max-w-[80%] mt-10 mb-20 m-auto flex flex-col items-center ">
-                <div className="flex sm:flex-row flex-col justify-center w-full mb-6">
-                    <Image src={product.image} alt={product.name} width={500} height={500} className=""/>
-                    <div className="flex flex-col w-full sm:w-1/2 gap-8">
+            <main className="w-full max-w-[90%] md:max-w-[80%] mt-10 mb-20 m-auto flex flex-col items-center ">
+                <div className="flex md:flex-row flex-col justify-center w-full mb-6">
+                    {/* <Image src={product.image} alt={product.name} width={400} height={400} className="w-full md:w-1/2 h-auto object-contain"/> */}
+                    <div className="w-full md:w-1/2 flex justify-center items-center">
+                        <div className="relative w-full max-w-lg ">
+                            <Image 
+                                src={product.image} 
+                                alt={product.name} 
+                                width={400} 
+                                height={400} 
+                                className="w-full h-auto object-contain bg-white"
+                                priority={true}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col w-full md:w-1/2 gap-8">
                         <div className="flex flex-col gap-2">
                             <h1 className="text-4xl font-bold">{product.name}</h1>
                             <p className="text-sm text-gray-700">{product.capacity}</p>
@@ -245,24 +258,90 @@ export default function ProductPage() {
                                 ))}
                             </div>
                         </div>
-                        <Link 
-                            href={product.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="inline-flex max-w-36"
-                        >
-                            <button 
-                                className="bg-red-600 inline-flex text-white cursor-pointer text-center rounded-lg py-2 px-4 font-medium hover:bg-red-700 transition duration-100"
-                                onClick={() => trackButtonClick(product.name)}
-                            >
-                                <p>Buy Product</p>
-                            </button>
-                        </Link>
+                        
+                        <div className="flex flex-col gap-6">
+
+                            {/* Primary CTA */}
+                            <div className="flex flex-col gap-3">
+                                <Link 
+                                href={product.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="w-full"
+                                >
+                                <button 
+                                    className="w-full bg-red-600 text-white text-center rounded-lg py-3 px-6 font-semibold text-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
+                                    onClick={() => trackButtonClick(product.name)}
+                                >
+                                    Buy Online Now
+                                </button>
+                                </Link>
+                                {/* <p className="text-sm text-gray-600 text-center">Fast delivery available</p> */}
+                            </div>
+
+
+                            {/* section to fix */}
+                            {/* Divider */}
+                            <div className="flex items-center gap-4">
+                                <div className="flex-1 h-px bg-gray-300"></div>
+                                <span className="text-gray-500 font-medium">OR</span>
+                                <div className="flex-1 h-px bg-gray-300"></div>
+                            </div>
+
+                            {/* Store Locator Section */}
+                            <div className="flex flex-col gap-4">
+                                <h3 className="text-lg font-semibold text-gray-800">Find in Stores</h3>
+                                <p className="text-sm text-gray-600 mb-2">Available at these major retailers:</p>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <Link 
+                                    href="https://www.watsons.com.hk/en/store-finder"
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="group"
+                                >
+                                    <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
+                                    <Image 
+                                        alt="Watsons" 
+                                        src="/watsonsLogo.png" 
+                                        width={150} 
+                                        height={40}
+                                        className="object-contain"
+                                    />
+                                    </div>
+                                    <p className="text-xs text-center mt-2 text-gray-600 group-hover:text-red-600 transition-colors">
+                                    Find nearest Watsons
+                                    </p>
+                                </Link>
+
+                                <Link 
+                                    href="https://www.mannings.com.hk/store-finder"
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="group"
+                                >
+                                    <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
+                                    <Image 
+                                        alt="Mannings" 
+                                        src="/manningsLogo.png" 
+                                        width={150} 
+                                        height={40}
+                                        className="object-contain"
+                                    />
+                                    </div>
+                                    <p className="text-xs text-center mt-2 text-gray-600 group-hover:text-red-600 transition-colors">
+                                    Find nearest Mannings
+                                    </p>
+                                </Link>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 <div className="flex flex-col gap-3 border-t-2 border-b-2 pt-6 pb-6">
                     <h1 className="text-2xl font-bold">Product Details</h1>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
                         <div className="flex flex-col gap-1">
                             <h1 className="font-semibold">Pharmacological Function</h1>
                             <p className="text-base">{product.function}</p>
@@ -283,8 +362,6 @@ export default function ProductPage() {
                 </div>
                 {/* component to show other product */}
                 <Carousel currentProductId={product.id} />
-
-                
             </main>
             <Footer/>
         </div>
