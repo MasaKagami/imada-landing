@@ -170,36 +170,93 @@ const conditionIcons: { [key: string]: JSX.Element } = {
 declare global {
   interface Window {
     fbq: (...args: [method: string, eventName: string, params?: Record<string, unknown>]) => void;
+    // gtag: (...args: any[]) => void;
   }
 }
 
-const trackButtonClick = (productName: string) => {
-    
-    // Check if Google Analytics is loaded
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        // Check if the user has already clicked in this session
-        if (!sessionStorage.getItem(`clicked_${productName}`)) {
-            window.gtag("event", "buy_product", {
-                event_category: "engagement",
-                event_label: productName,
-            });
-
-            // Mark as clicked in session storage
-            sessionStorage.setItem(`clicked_${productName}`, "true");
-        }
-    } else {
-        console.warn("Google Analytics (gtag) is not loaded yet.");
-    }
-
-      // Meta Pixel Custom Event Tracking
+// Updated tracking function for Purchase event
+const trackPurchaseEvent = (product: Product) => {
+    // Meta Pixel Purchase Event
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
-        window.fbq('trackCustom', 'BuyButtonClick', {
-        product_name: productName,
+        window.fbq('track', 'Purchase', {
+            content_ids: [product.id.toString()],
+            content_name: product.name,
+            content_type: 'product',
+            content_category: 'Health & Beauty',
+            currency: 'HKD',
+            value: 50.00, // You can set actual price or estimate
+            num_items: 1
         });
     } else {
         console.warn("Meta Pixel (fbq) is not loaded.");
     }
+
+    // // Google Analytics Purchase Event
+    // if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    //     if (!sessionStorage.getItem(`purchased_${product.name}`)) {
+    //         window.gtag("event", "purchase", {
+    //             transaction_id: `${product.id}_${Date.now()}`,
+    //             value: 50.00,
+    //             currency: 'HKD',
+    //             items: [{
+    //                 item_id: product.id.toString(),
+    //                 item_name: product.name,
+    //                 category: 'Health & Beauty',
+    //                 quantity: 1,
+    //                 price: 50.00
+    //             }]
+    //         });
+    //         sessionStorage.setItem(`purchased_${product.name}`, "true");
+    //     }
+    // } else {
+    //     console.warn("Google Analytics (gtag) is not loaded yet.");
+    // }
 };
+
+// New function for ViewContent event (store finder)
+const trackViewContentEvent = (storeName: string, product: Product) => {
+    // Meta Pixel ViewContent Event
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        window.fbq('track', 'ViewContent', {
+            content_ids: [product.id.toString()],
+            content_name: `${product.name} - ${storeName} Store Finder`,
+            content_type: 'product',
+            content_category: 'Health & Beauty',
+            currency: 'HKD',
+            value: 50.00
+        });
+    } else {
+        console.warn("Meta Pixel (fbq) is not loaded.");
+    }
+
+    // // Google Analytics ViewContent Event
+    // if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    //     window.gtag("event", "view_item", {
+    //         currency: 'HKD',
+    //         value: 50.00,
+    //         items: [{
+    //             item_id: product.id.toString(),
+    //             item_name: product.name,
+    //             category: 'Health & Beauty',
+    //             quantity: 1,
+    //             price: 50.00
+    //         }]
+    //     });
+    // } else {
+    //     console.warn("Google Analytics (gtag) is not loaded yet.");
+    // }
+};
+
+
+
+
+
+
+
+
+
+
+
 
 export default function ProductPage() {
     const params = useParams();
@@ -212,15 +269,28 @@ export default function ProductPage() {
         }
       }, [params.id]);
   
+    // Track ViewContent when page loads
+    useEffect(() => {
+        if (product && typeof window !== "undefined" && typeof window.fbq === "function") {
+            window.fbq('track', 'ViewContent', {
+                content_ids: [product.id.toString()],
+                content_name: product.name,
+                content_type: 'product',
+                content_category: 'Health & Beauty',
+                currency: 'HKD',
+                value: 50.00
+            });
+        }
+    }, [product]);
+
     if (!product) return (
         <div className="w-screen min-h-screen">
             <Navbar/>
                 <div className="h-full w-full justify-center items-center">
                     <p className="text-center mt-10">Loading product...</p>
                 </div>
-            {/* <Footer/> */}
         </div>
-        ); // Prevents hydration mismatch
+    ); // Prevents hydration mismatch
   
     return (
         <div className="w-screen min-h-screen">
@@ -271,7 +341,7 @@ export default function ProductPage() {
                                 >
                                 <button 
                                     className="w-full bg-red-600 text-white text-center rounded-lg py-3 px-6 font-semibold text-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
-                                    onClick={() => trackButtonClick(product.name)}
+                                    onClick={() => trackPurchaseEvent(product)}
                                 >
                                     Buy Online Now
                                 </button>
@@ -299,6 +369,7 @@ export default function ProductPage() {
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="group"
+                                    onClick={() => trackViewContentEvent("Watsons", product)}
                                 >
                                     <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
                                     <Image 
@@ -319,6 +390,7 @@ export default function ProductPage() {
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="group"
+                                    onClick={() => trackViewContentEvent("Mannings", product)}
                                 >
                                     <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
                                     <Image 
