@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Navbar from "@/component/navbar/navbar";
@@ -22,9 +23,22 @@ type Product = {
     conditions: string[];
 }
 
+// const renderTextWithLineBreaks = (text: string) => {
+//     const lines = text.split(/\r?\n/).map(line => line.trim());
+    
+//     return lines.map((line, index) => (
+//       <React.Fragment key={index}>
+//         {line}
+//         {index < lines.length - 1 && <br />}
+//       </React.Fragment>
+//     ));
+//   };
+
 const products = [
     { id: 1, name: "Imada Seasons Safe Oil", image: "/imada-1.webp", 
-        usage: "Imada’s Seasons Safe Oil has anti-inflammatory effects, helps relieve cold symptoms, promotes blood circulation, and relieves pain. It is used to support recovery from back pain, sprains and bruises, injuries from falls, dizziness, nasal congestion, seasickness, and insect bites. Perfect for traveling, hiking, exercising, or everyday use, this balm is your natural companion for staying prepared and protected.", 
+        usage: `Imada’s Seasons Safe Oil has anti-inflammatory effects, helps relieve cold symptoms, promotes blood circulation, and relieves pain. It is used to support recovery from back pain, sprains and bruises, injuries from falls, dizziness, nasal congestion, seasickness, and insect bites.
+        
+        Perfect for traveling, hiking, exercising, or everyday use, this balm is your natural companion for staying prepared and protected.`, 
         function: "Headache, Stomach-Ache, Mental Tiredness, Sun-Stroke, Sea-Sickness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles etc.", 
         info:"This medicated oil is prepared from precious Chinese herbs and is processed under traditional method. Its powerful medicinal ingredients provide efficient treatment for many diseases with remarkable results.", 
         ingredients: "Menthol, Camphora, Clove Leaf Oil, Cinnamon Leaf Oil, Cinnamic Aldehyde, Radix Angelicae Sinensis, Herba Patchouli, Radix Glycyrrhizae, Sanguis Draconis, Peppermint Oil. Most ingredients are natural substances and in line with international standards.", 
@@ -33,18 +47,11 @@ const products = [
         url : "https://detail.tmall.hk/hk/item.htm?spm=a21xtw.29178619.product_shelf.4.28f237d0k4sc5j&id=618560991013&pisk=gv0S24qjtv32kWUdOuA41rRg_G4IOI8Zv6NKsXQP9zUJJeMqd2Ro9JuQRxDYvvkzyJCIHXeRY0RlpxlKe8yE92PKRz0q4wyyEyGKQy9wQF8ZZb4uJdJNd4IyuPF5v7BUviUY8WaqWHp-Zb43psWpbmhlO-z3K6FLpIaYOW2LJkE8HINUOTULekBAD5eYJyFLeSBYO5WLwyHdDrFu1Med2gUxMWP3JJHL2sCYnWULwvUK615Qgd2mNQ2cK36f13i8hwQKlSOuBbT58Sg4NfwswXoZfq_gVRh8hwpMehM3H5gvKTynlj38txLVPyGYOAa-cKQSdbniK5HJlTFS2fGac2vORSmxEoPScBIYefezy-gHtw2-4X3UA4pOT83oUqZi-T94LclqyoM93ZM3A0nTy296kgRl7RG3tM1bjwNbQIOfxMXrku4QFk4YuuF0g3RXGGrQ2SVXNIOfxMq8iSPkGIsaA",
         conditions: ["inflammation", "blood_circulation", "back_pain"]
     },
-    // { id: 2, name: "Imada Seasons Safe Balm", image: "/imada-2.webp", 
-    //     usage: "For fractures and injuries and external pain, rub the oil on the affected area will bring immediate relief. For burns and cuts, continuous bleeding, quickly apply cotton wool soaked with this oil to cover the injured part. It will insatnatly stop bleeding and inflammation.", 
-    //     function: "Headache, Stomach-Ache, Mental Tiredness, Sun-Stroke, Sea-Sickness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles etc.", 
-    //     info:"This medicated oil is prepared from precious Chinese herbs and is processed under traditional method. Its powerful medicinal ingredients provide efficient treatment for many diseases with remarkable results.", 
-    //     ingredients: "Menthol, Camphora, Clove Leaf Oil, Cinnamon Leaf Oil, Cinnamic Aldehyde, Radix Angelicae Sinensis, Herba Patchouli, Radix Glycyrrhizae, Sanguis Draconis, Peppermint Oil. Most ingredients are natural substances and in line with international standards.", 
-    //     notes: "For External Use Only. Not to be Taken. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
-    //     capacity :"3g/20g",
-    //     url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
-    //     conditions: ["inflammation", "blood_circulation", "pain"]
-    // },
+
     { id: 3, name: "Imada Red Flower Oil", image: "/imada-3.webp", 
-        usage: "Imada’s Red Flow Oil has anti-inflammatory and pain-relieving effects, helps improve blood circulation, dispels cold, reduces swelling, and relieves pain. It is commonly used for joint pain caused by cold and dampness, as well as pain from sprains, bruises, or other injuries. Ideal for travel, outdoor activities, workouts, or daily use, this balm is your go-to natural remedy to keep you prepared and protected.", 
+        usage: `Imada’s Red Flow Oil has anti-inflammatory and pain-relieving effects, helps improve blood circulation, dispels cold, reduces swelling, and relieves pain. It is commonly used for joint pain caused by cold and dampness, as well as pain from sprains, bruises, or other injuries.
+        
+        Ideal for travel, outdoor activities, workouts, or daily use, this balm is your go-to natural remedy to keep you prepared and protected.`, 
         function: "Reduce inflammation and pain. Improve circulation and fend off coldness. Reduce swelling and pain. Reduce muscle pain and joint pain. Temporarily relieves pain caused by bruise and impact injury.", 
         info:"Reduce inflammation and pain. Improve circulation and fend off coldness. Reduce swelling and pain. Reduce muscle pain and joint pain. Temporarily relieves pain caused by bruise and impact injury.", 
         ingredients: "Methyl Salicylate, Cinnamon Leaf Oil, Sanguis Draconis, Flos Carthami. Most ingredients are natural substances and in line with international standards.", 
@@ -54,37 +61,38 @@ const products = [
         conditions: ["inflammation", "blood_circulation", "pain"]
     },
     { id: 4, name: "Imada Hotdrug Oil", image: "/imada-4.webp", 
-        usage: "Imada’s Hot Drug Oil helps refresh the mind, promote blood circulation, and relieve secondary pain caused by joint and limb discomfort. Ideal for travel, outdoor activities, workouts, or daily use, this balm is your go-to natural remedy to keep you prepared and protected.", 
+        usage: `Imada’s Hot Drug Oil helps refresh the mind, promote blood circulation, and relieve secondary pain caused by joint and limb discomfort.
+        
+        Ideal for travel, outdoor activities, workouts, or daily use, this balm is your go-to natural remedy to keep you prepared and protected.`, 
         function: "To dissipate bruise, to promote blood circulation, to relax and relieve stiffness, to act as an analgesic. Temporary relieft of minor aches and pains associated with sprains, stiff joints, bruises, headache, lumbago, contusion and sore muscles.", 
         info: "Imada Hotdrug Oil is a comprehensive of Chinese herbs and natural essences specially for the relief of all kinds of muscle aches and pains caused by fatigue or physical exercise.", 
         ingredients: "Oil of Clove, Oil of Citronellal, Camphor, Menthol Crystals, Eucalyptus Oil, Oil of Turpentine, Oil of White, Menthyl Salicylate. Most ingredients are natural substances and in line with international standards.", 
-        notes: "To use, apply an appropriate amount to the affected area and massage gently for faster results. For best effects, massage the area, starting lightly and increasing pressure gradually. Apply more than twice a day as needed. For long-lasting injuries, use a hot water bag to warm the area before application. This helps increase body temperature, boost circulation, and enhance the balm’s effectiveness.", 
+        notes: `To use, apply an appropriate amount to the affected area and massage gently for faster results. For best effects, massage the area, starting lightly and increasing pressure gradually. Apply more than twice a day as needed.
+        
+        For long-lasting injuries, use a hot water bag to warm the area before application. This helps increase body temperature, boost circulation, and enhance the balm’s effectiveness.`, 
         capacity :"20ml/40ml",
         url : "https://detail.tmall.hk/hk/item.htm?spm=a21xtw.29178619.product_shelf.5.28f237d0k4sc5j&id=618723695891&pisk=gT9IqG16qUpaIOB8V6mNcOoc0SX5dck2wusJm3eU29BKeYTwPLoH2aJ5FFYOwU8FpaEWW3QLaBo3yF-JJw7y2LSJF9vwT87E-TtJuTgquxk2xHXhequ4PpFEQ9j52geLz1QOcTsdQqGRSHXle4ZaejkXxeb6d_PR2Gn14gydyUCRBNQGVMEpywCTWisceTLR2NIODgP8y6B-f5IPvyIRJgHTBMjCvTBJyOKOYNQRe6LJXf3YVGucSHihSzcQ5fMDTNw8edssxZKIZ8S6dM6llHKyEKv_n6_vvNw-o2hXrNIXB44Frdt9pgYtQJ6WXgTfpCgTdUtpiUjvJAadABKX019ok8sM6efNACi86wKA89Q6E02lJB-JU_9Kku7pKeJ1iL4I7aR2bpC6kVy6r_OpM9pSlAIPr-7XqgV7fs25fZosf7Vu8dChFw1lBO5djGlEfcNVN6IGfDisf7Vl9GjNxci_g_1..",
         conditions: ["mind", "blood_circulation", "joint"]
     },
     { id: 5, name: "Imada Sze Chi Healing Oil", image: "/imada-5.webp", 
-        usage: "Imada’s Lion Oil is used for the emergency treatment of trauma—it helps stop bleeding, relieve pain, kill bacteria, reduce swelling, and disperse blood stasis. It is effective for skin irritation and itching caused by bruises, knife wounds, burns (from hot water or fire), and insect or mosquito bites. Perfect for travel, exercise, outdoor adventures, or everyday use, this balm is your natural remedy to stay prepared and protected.", 
+        usage: `Imada’s Lion Oil is used for the emergency treatment of trauma—it helps stop bleeding, relieve pain, kill bacteria, reduce swelling, and disperse blood stasis. It is effective for skin irritation and itching caused by bruises, knife wounds, burns (from hot water or fire), and insect or mosquito bites. 
+        
+        Perfect for travel, exercise, outdoor adventures, or everyday use, this balm is your natural remedy to stay prepared and protected.`, 
         function: "It gives muscle relaxing, blood activating, bruise dispelling and analgesic effects. It is indicated for joint and bone pain, acute sprain, contusion, muscular and rheumatic pain, and pain around the hepatic area.", 
         info: "This oil out of trauma emergency, home to visit relatives, boat and car back and forth, sports, hiking, suburban walking, hope to have no trouble, can be safe.", 
         ingredients: "Camphor, Eucalyptus Oil, Oil of Citronellal, Tea oil, Menthol. Most ingredients are natural substances and in line with international standards.", 
-        notes: "To use, apply an appropriate amount externally to the affected area. For minor wounds or bleeding, soak cotton in the balm, apply it directly, and cover with gauze if needed to help stop bleeding and relieve pain. For bruises, swelling, or muscle pain, massage the balm into the area several times a day to help relax muscles, promote circulation, and reduce inflammation. In cases of joint pain or stiffness, apply the balm and then cover with a warm towel to enhance absorption and speed recovery.", 
+        notes: `To use, apply an appropriate amount externally to the affected area. For minor wounds or bleeding, soak cotton in the balm, apply it directly, and cover with gauze if needed to help stop bleeding and relieve pain.
+        
+        For bruises, swelling, or muscle pain, massage the balm into the area several times a day to help relax muscles, promote circulation, and reduce inflammation. In cases of joint pain or stiffness, apply the balm and then cover with a warm towel to enhance absorption and speed recovery.`, 
         capacity :"25ml",
         url : "https://detail.tmall.hk/hk/item.htm?spm=a21xtw.29178619.product_shelf.2.28f237d0k4sc5j&id=618208449894&pisk=gJnn2YmW551fNwdTWcZBo1ZfcST9dkZ79bI8wuFy75P1pvHpR8qusxzpdbh-STcU1Mh8vuhGzXhc9BNK2bDzsXS8J0D5q8krNpNJdFHIduZyMInkDvMQ5S_ldDVebPk_ew7eWyJ3n0mWMIKvqeWaqBAxwvR9zFy03uyUzWkwI82lYuzUzAJgU8CFzMlyId20Fg5Uz8Wab8NNzJSzzAWah-WFawPyIAP_E7yrauJgb5wr6Is49AHmbC6ATCW3lUhTKyVqLWc-wc5QRwMgsZ7mjjBzav754gogKymWS3vpeuuEpf4x-Ij3DvujN-lFTB2ixxmouf-OxuDZu0qZbCWTTqMiqkneeHrZxXmUSbW55yuj9qziXBj_gVkieP06FwF-l8l7l0dfAWkrhmgYm3XuIqDajgRC7Z7xCgwwec75Pyy_ISn_QHxeboYvAdvGuPaUCJ8eIdbSUyy_ISpMIZWT8Rwe8",
         conditions: ["pain", "bacteria"]
     },
-    // { id: 6, name: "Imada Gold Dragon Oil", image: "/imada-6.webp", 
-    //     usage: "Headache, Stomach-Ache, Mental Tiredness, Sea-Sickness, Drunkenness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles, Burns & Scald.", 
-    //     function: "Headache, Stomach-Ache, Mental Tiredness, Sun-Stroke, Sea-Sickness, Swelling Limbs, Rheumatism, Spasm, Colds, Mosquito Bites, Flea Bites, Measles etc.", 
-    //     info: "This embrocation is prepared by the pharmaceutical processes by combining different kinds of plant extracts from different parts of the world. It is pure in colour with pleasant smell, and is entirely free from drastic substances. It does not grease clothes and at the same time, is neutral to the skin so as to produce osmotic effect on the cells to promote the regularity of blood circulation. It is recuperative to pains and preventive against epidemics and contagious diseases. It is the first aid to all emergencies and is suited for all external ailments without any side effect.", 
-    //     ingredients: "Methyl Salicyate, Eucalyptus Oil, Menthol Crystals, Peppermint, Camphor and Essential Oil. Most ingredients are natural substances and in line with international standards.", 
-    //     notes: "For External Use Only. Not to be Taken. Children suffering from Influenza, Chickenpox, or fever should avoid using products containing methyl salicylate and if persons allergic to salicylic acid should consult your doctor before using thie product. Pregnant women and infants should avoid using this product. Use with caution on damaged or allergic skin.", 
-    //     capacity :"2ml/5ml/10ml/20ml",
-    //     url : "https://www.watsons.com.hk/en/imada-red-flower-oil-50ml/p/BP_807119",
-    //     conditions: ["mind", "inflammation"]
-    // },
+
     { id: 7, name: "Snake Porous Capsicum Plaster", image: "/imada-7.webp", 
-        usage: "Imada’s Capsicum Plaster is an adhesive tape that promotes body heat and treats pain in various parts of the body. Best used for lumbar pain, back pain, muscle pain, bruises, and sprains. Perfect for travel, exercise, outdoor adventures, or everyday use, this balm is your natural remedy to stay prepared and protected.", 
+        usage: `Imada’s Capsicum Plaster is an adhesive tape that promotes body heat and treats pain in various parts of the body. Best used for lumbar pain, back pain, muscle pain, bruises, and sprains.
+        
+        Perfect for travel, exercise, outdoor adventures, or everyday use, this balm is your natural remedy to stay prepared and protected.`, 
         function: "Lambago, Backache, Muscle Fatigue, Bruises, Sprain.", 
         info:"Snake Porous Capsicum Plaster is designed with holes on the back of the cloth to provide excellent penetrating effect after application. It stickes on body for good ventilation to prevent the so-called dermatitis. It is a comfortable remedy for all kinds of body aches.", 
         ingredients: "Capsicum, Natural Resin, Zinc Oxide, White Wax, Soybean Oil, Beeswax. Most ingredients are natural substances and in line with international standards.", 
@@ -248,16 +256,6 @@ const trackViewContentEvent = (storeName: string, product: Product) => {
 };
 
 
-
-
-
-
-
-
-
-
-
-
 export default function ProductPage() {
     const params = useParams();
     const [product, setProduct] = useState<Product | null>(null); // Initially null to prevent hydration issues
@@ -315,10 +313,13 @@ export default function ProductPage() {
                         <div className="flex flex-col gap-2">
                             <h1 className="text-4xl font-bold">{product.name}</h1>
                             <p className="text-sm text-gray-700">{product.capacity}</p>
-                            <h1 className="text-lg font-semibold">Function:</h1>
-                            <p className="text-sm font-normal">{product.usage}</p>
-                            <h1 className="text-lg font-semibold">Notes:</h1>
-                            <h1 className="text-sm font-normal">{product.notes}</h1>
+                            {/* <h1 className="text-lg font-semibold">Function:</h1> */}
+                            <p className="text-sm font-normal whitespace-pre-line">{product.usage}</p>
+                            {/* <p className="text-sm font-normal whitespace-pre-line">{renderTextWithLineBreaks(product.usage)}</p> */}
+                        
+
+                            {/* <h1 className="text-lg font-semibold">How to Use:</h1>
+                            <h1 className="text-sm font-normal">{product.notes}</h1> */}
                             <div className="flex items-center gap-4 mt-1">
                                 {product.conditions.map((condition: string) => (
                                     <div key={condition} className="flex flex-col items-center gap-1">
@@ -407,9 +408,19 @@ export default function ProductPage() {
                                 </Link>
                                 </div>
                             </div>
+
+                            {/* how to use */}
+                            <div className="flex flex-col gap-2">
+                                <h1 className="text-lg font-semibold">How to Use:</h1>
+                                <h1 className="text-sm font-normal whitespace-pre-line">{product.notes}</h1>
+                                {/* <h1 className="text-sm font-normal">{renderTextWithLineBreaks(product.notes)}</h1> */}
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                {/* <h1 className="text-lg font-semibold">How to Use:</h1>
+                <h1 className="text-sm font-normal">{product.notes}</h1> */}
 
                 <div className="flex flex-col gap-3 border-t-2 border-b-2 pt-6 pb-6">
                     <h1 className="text-2xl font-bold">Product Details</h1>
