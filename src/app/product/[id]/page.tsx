@@ -410,11 +410,10 @@ export default function ProductPage() {
                             </div>
 
                             {/* how to use */}
-                            <div className="flex flex-col gap-2">
+                            {/* <div className="flex flex-col gap-2">
                                 <h1 className="text-lg font-semibold">How to Use:</h1>
                                 <h1 className="text-sm font-normal whitespace-pre-line">{product.notes}</h1>
-                                {/* <h1 className="text-sm font-normal">{renderTextWithLineBreaks(product.notes)}</h1> */}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -426,8 +425,11 @@ export default function ProductPage() {
                     <h1 className="text-2xl font-bold">Product Details</h1>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
                         <div className="flex flex-col gap-1">
-                            <h1 className="font-semibold">Pharmacological Function</h1>
-                            <p className="text-base">{product.function}</p>
+                            {/* <h1 className="font-semibold">Pharmacological Function</h1> */}
+                            {/* <p className="text-base">{product.function}</p> */}
+
+                            <h1 className="font-semibold">How to Use:</h1>
+                            <h1 className="text-base whitespace-pre-line">{product.notes}</h1>
                         </div>
                         <div className="flex flex-col gap-1">
                             <h1 className="font-semibold">Information</h1>
