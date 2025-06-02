@@ -366,7 +366,7 @@ export default function ProductPage() {
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <Link 
-                                    href="https://www.watsons.com.hk/en/store-finder"
+                                    href="https://www.watsons.com.hk/en/product-categories/c/1?q=:productBrandCode:productBrandCode:109351"
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="group"
@@ -387,7 +387,7 @@ export default function ProductPage() {
                                 </Link>
 
                                 <Link 
-                                    href="https://www.mannings.com.hk/store-finder"
+                                    href="https://www.mannings.com.hk/brands/IMADA?page=1"
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="group"
@@ -428,13 +428,13 @@ export default function ProductPage() {
                             {/* <h1 className="font-semibold">Pharmacological Function</h1> */}
                             {/* <p className="text-base">{product.function}</p> */}
 
-                            <h1 className="font-semibold">How to Use:</h1>
+                            <h1 className="font-semibold">How to Use</h1>
                             <h1 className="text-base whitespace-pre-line">{product.notes}</h1>
                         </div>
-                        <div className="flex flex-col gap-1">
+                        {/* <div className="flex flex-col gap-1">
                             <h1 className="font-semibold">Information</h1>
                             <p className="text-base">{product.info}</p>
-                        </div>
+                        </div> */}
                         <div className="flex flex-col gap-1">
                             <h1 className="font-semibold">Main Ingredients</h1>
                             <p className="text-base">{product.ingredients}</p>
