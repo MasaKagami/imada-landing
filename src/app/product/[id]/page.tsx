@@ -23,17 +23,6 @@ type Product = {
     conditions: string[];
 }
 
-// const renderTextWithLineBreaks = (text: string) => {
-//     const lines = text.split(/\r?\n/).map(line => line.trim());
-    
-//     return lines.map((line, index) => (
-//       <React.Fragment key={index}>
-//         {line}
-//         {index < lines.length - 1 && <br />}
-//       </React.Fragment>
-//     ));
-//   };
-
 const products = [
     { id: 1, name: "Imada Seasons Safe Oil", image: "/imada-1.webp", 
         usage: `Imada’s Seasons Safe Oil has anti-inflammatory effects, helps relieve cold symptoms, promotes blood circulation, and relieves pain. It is used to support recovery from back pain, sprains and bruises, injuries from falls, dizziness, nasal congestion, seasickness, and insect bites.
@@ -182,78 +171,80 @@ declare global {
   }
 }
 
-// Updated tracking function for Purchase event
-const trackPurchaseEvent = (product: Product) => {
-    // Meta Pixel Purchase Event
+// 1. InitiateCheckout for "Buy Online Now" button
+const trackInitiateCheckoutEvent = (product: Product) => {
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
-        window.fbq('track', 'Purchase', {
+        window.fbq('track', 'InitiateCheckout', {
             content_ids: [product.id.toString()],
             content_name: product.name,
             content_type: 'product',
             content_category: 'Health & Beauty',
             currency: 'HKD',
-            value: 50.00, // You can set actual price or estimate
+            value: 50.00,
             num_items: 1
         });
+        console.log('InitiateCheckout event tracked for:', product.name);
     } else {
         console.warn("Meta Pixel (fbq) is not loaded.");
     }
-
-    // // Google Analytics Purchase Event
-    // if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    //     if (!sessionStorage.getItem(`purchased_${product.name}`)) {
-    //         window.gtag("event", "purchase", {
-    //             transaction_id: `${product.id}_${Date.now()}`,
-    //             value: 50.00,
-    //             currency: 'HKD',
-    //             items: [{
-    //                 item_id: product.id.toString(),
-    //                 item_name: product.name,
-    //                 category: 'Health & Beauty',
-    //                 quantity: 1,
-    //                 price: 50.00
-    //             }]
-    //         });
-    //         sessionStorage.setItem(`purchased_${product.name}`, "true");
-    //     }
-    // } else {
-    //     console.warn("Google Analytics (gtag) is not loaded yet.");
-    // }
 };
 
-// New function for ViewContent event (store finder)
+// 2. ViewContent event for store finder clicks
 const trackViewContentEvent = (storeName: string, product: Product) => {
-    // Meta Pixel ViewContent Event
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
         window.fbq('track', 'ViewContent', {
             content_ids: [product.id.toString()],
-            content_name: `${product.name} - ${storeName} Store Finder`,
+            content_name: `${product.name} - ${storeName} Store Locator`,
             content_type: 'product',
+            content_category: 'Health & Beauty',
+            currency: 'HKD',
+            value: 50.00,
+            custom_parameter: `store_finder_${storeName.toLowerCase()}`
+        });
+        console.log(`ViewContent event tracked for: ${product.name} - ${storeName}`);
+    } else {
+        console.warn("Meta Pixel (fbq) is not loaded.");
+    }
+};
+
+// 3. Lead event for store finder
+const trackLeadEvent = (storeName: string, product: Product) => {
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        window.fbq('track', 'Lead', {
+            content_ids: [product.id.toString()],
+            content_name: `${product.name} - ${storeName} Store Interest`,
             content_category: 'Health & Beauty',
             currency: 'HKD',
             value: 50.00
         });
+        console.log(`Lead event tracked for: ${storeName} store finder`);
     } else {
         console.warn("Meta Pixel (fbq) is not loaded.");
     }
-
-    // // Google Analytics ViewContent Event
-    // if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    //     window.gtag("event", "view_item", {
-    //         currency: 'HKD',
-    //         value: 50.00,
-    //         items: [{
-    //             item_id: product.id.toString(),
-    //             item_name: product.name,
-    //             category: 'Health & Beauty',
-    //             quantity: 1,
-    //             price: 50.00
-    //         }]
-    //     });
-    // } else {
-    //     console.warn("Google Analytics (gtag) is not loaded yet.");
-    // }
 };
+
+// 4. Combined tracking function for store finder
+const trackStoreFinder = (storeName: string, product: Product) => {
+    trackViewContentEvent(storeName, product);
+    trackLeadEvent(storeName, product);
+};
+
+// test
+const testPixel = () => {
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        window.fbq('track', 'CustomEvent', {
+            test_parameter: 'pixel_test',
+            page: 'product_page',
+            timestamp: new Date().toISOString()
+        });
+        console.log('✅ Test event sent successfully');
+        alert('Test pixel event sent! Check your browser console and Facebook Events Manager.');
+    } else {
+        console.warn('❌ Meta Pixel (fbq) is not loaded');
+        alert('Meta Pixel not found! Check your setup.');
+    }
+};
+
 
 
 export default function ProductPage() {
@@ -295,7 +286,6 @@ export default function ProductPage() {
             <Navbar/>
             <main className="w-full max-w-[90%] md:max-w-[80%] mt-10 mb-20 m-auto flex flex-col items-center ">
                 <div className="flex md:flex-row flex-col justify-center w-full mb-6">
-                    {/* <Image src={product.image} alt={product.name} width={400} height={400} className="w-full md:w-1/2 h-auto object-contain"/> */}
                     <div className="w-full md:w-1/2 flex justify-center items-center">
                         <div className="relative w-full max-w-lg ">
                             <Image 
@@ -313,13 +303,8 @@ export default function ProductPage() {
                         <div className="flex flex-col gap-2">
                             <h1 className="text-4xl font-bold">{product.name}</h1>
                             <p className="text-sm text-gray-700">{product.capacity}</p>
-                            {/* <h1 className="text-lg font-semibold">Function:</h1> */}
                             <p className="text-sm font-normal whitespace-pre-line">{product.usage}</p>
-                            {/* <p className="text-sm font-normal whitespace-pre-line">{renderTextWithLineBreaks(product.usage)}</p> */}
-                        
-
-                            {/* <h1 className="text-lg font-semibold">How to Use:</h1>
-                            <h1 className="text-sm font-normal">{product.notes}</h1> */}
+                    
                             <div className="flex items-center gap-4 mt-1">
                                 {product.conditions.map((condition: string) => (
                                     <div key={condition} className="flex flex-col items-center gap-1">
@@ -342,12 +327,11 @@ export default function ProductPage() {
                                 >
                                 <button 
                                     className="w-full bg-red-600 text-white text-center rounded-lg py-3 px-6 font-semibold text-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
-                                    onClick={() => trackPurchaseEvent(product)}
+                                    onClick={() => trackInitiateCheckoutEvent(product)}
                                 >
                                     Buy Online Now
                                 </button>
                                 </Link>
-                                {/* <p className="text-sm text-gray-600 text-center">Fast delivery available</p> */}
                             </div>
 
 
@@ -370,7 +354,7 @@ export default function ProductPage() {
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="group"
-                                    onClick={() => trackViewContentEvent("Watsons", product)}
+                                    onClick={() => trackStoreFinder("Watsons", product)}
                                 >
                                     <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
                                     <Image 
@@ -391,7 +375,7 @@ export default function ProductPage() {
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="group"
-                                    onClick={() => trackViewContentEvent("Mannings", product)}
+                                    onClick={() => trackStoreFinder("Mannings", product)}
                                 >
                                     <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
                                     <Image 
@@ -408,33 +392,18 @@ export default function ProductPage() {
                                 </Link>
                                 </div>
                             </div>
-
-                            {/* how to use */}
-                            {/* <div className="flex flex-col gap-2">
-                                <h1 className="text-lg font-semibold">How to Use:</h1>
-                                <h1 className="text-sm font-normal whitespace-pre-line">{product.notes}</h1>
-                            </div> */}
                         </div>
                     </div>
                 </div>
 
-                {/* <h1 className="text-lg font-semibold">How to Use:</h1>
-                <h1 className="text-sm font-normal">{product.notes}</h1> */}
 
                 <div className="flex flex-col gap-3 border-t-2 border-b-2 pt-6 pb-6">
                     <h1 className="text-2xl font-bold">Product Details</h1>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
                         <div className="flex flex-col gap-1">
-                            {/* <h1 className="font-semibold">Pharmacological Function</h1> */}
-                            {/* <p className="text-base">{product.function}</p> */}
-
                             <h1 className="font-semibold">How to Use</h1>
                             <h1 className="text-base whitespace-pre-line">{product.notes}</h1>
                         </div>
-                        {/* <div className="flex flex-col gap-1">
-                            <h1 className="font-semibold">Information</h1>
-                            <p className="text-base">{product.info}</p>
-                        </div> */}
                         <div className="flex flex-col gap-1">
                             <h1 className="font-semibold">Main Ingredients</h1>
                             <p className="text-base">{product.ingredients}</p>
@@ -449,6 +418,17 @@ export default function ProductPage() {
                 <Carousel currentProductId={product.id} />
             </main>
             <Footer/>
+            {/* REMOVE THIS AFTER TESTING */}
+            {process.env.NODE_ENV === 'development' && (
+                <div className="fixed bottom-4 right-4 z-50">
+                    <button 
+                        onClick={testPixel}
+                        className="bg-blue-600 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-700"
+                    >
+                        Test Pixel
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
