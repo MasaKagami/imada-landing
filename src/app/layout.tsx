@@ -15,8 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* Meta Pixel Base Code */}
+      <body className={`${montserrat.className} antialiased`}>
+        {children}
+        
+        {/* Meta Pixel Base Code - moved to body for better loading */}
         <Script
           id="meta-pixel"
           strategy="afterInteractive"
@@ -46,12 +48,6 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
-      </head>
-
-      <body
-        className={`${montserrat.className} antialiased`}
-      >
-        {children}
       </body>
     </html>
   );
