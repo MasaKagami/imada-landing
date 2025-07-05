@@ -166,86 +166,119 @@ const conditionIcons: { [key: string]: JSX.Element } = {
 
 declare global {
   interface Window {
-    fbq: (...args: [method: string, eventName: string, params?: Record<string, unknown>]) => void;
-    // gtag: (...args: any[]) => void;
+    gtag: (...args: any[]) => void;
   }
 }
 
-// 1. InitiateCheckout for "Buy Online Now" button
-const trackInitiateCheckoutEvent = (product: Product) => {
-    if (typeof window !== "undefined" && typeof window.fbq === "function") {
-        window.fbq('track', 'InitiateCheckout', {
-            content_ids: [product.id.toString()],
-            content_name: product.name,
-            content_type: 'product',
-            content_category: 'Health & Beauty',
+// 1. Track "Buy Online Now" clicks
+const trackPurchaseIntent = (product: Product) => {
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+        // Standard e-commerce event
+        window.gtag('event', 'begin_checkout', {
             currency: 'HKD',
             value: 50.00,
-            num_items: 1
+            items: [{
+                item_id: product.id.toString(),
+                item_name: product.name,
+                item_category: 'Health & Beauty',
+                item_category2: 'Traditional Chinese Medicine',
+                item_brand: 'Imada',
+                quantity: 1,
+                price: 50.00
+            }]
         });
-        console.log('InitiateCheckout event tracked for:', product.name);
+        
+        // Custom event for detailed tracking
+        window.gtag('event', 'imada_buy_now_clicked', {
+            product_name: product.name,
+            product_id: product.id.toString(),
+            product_capacity: product.capacity,
+            product_conditions: product.conditions.join(', '),
+            click_location: 'product_page',
+            site_domain: 'imadahk.com',
+            event_category: 'Purchase Intent',
+            event_label: `Buy Now - ${product.name}`
+        });
+        
+        console.log('✅ Purchase intent tracked for Imada product:', product.name);
     } else {
-        console.warn("Meta Pixel (fbq) is not loaded.");
+        console.warn("Google Analytics (gtag) is not loaded.");
     }
 };
 
-// 2. ViewContent event for store finder clicks
-const trackViewContentEvent = (storeName: string, product: Product) => {
-    if (typeof window !== "undefined" && typeof window.fbq === "function") {
-        window.fbq('track', 'ViewContent', {
-            content_ids: [product.id.toString()],
-            content_name: `${product.name} - ${storeName} Store Locator`,
-            content_type: 'product',
-            content_category: 'Health & Beauty',
-            currency: 'HKD',
-            value: 50.00,
-            custom_parameter: `store_finder_${storeName.toLowerCase()}`
-        });
-        console.log(`ViewContent event tracked for: ${product.name} - ${storeName}`);
-    } else {
-        console.warn("Meta Pixel (fbq) is not loaded.");
-    }
-};
-
-// 3. Lead event for store finder
-const trackLeadEvent = (storeName: string, product: Product) => {
-    if (typeof window !== "undefined" && typeof window.fbq === "function") {
-        window.fbq('track', 'Lead', {
-            content_ids: [product.id.toString()],
-            content_name: `${product.name} - ${storeName} Store Interest`,
-            content_category: 'Health & Beauty',
-            currency: 'HKD',
-            value: 50.00
-        });
-        console.log(`Lead event tracked for: ${storeName} store finder`);
-    } else {
-        console.warn("Meta Pixel (fbq) is not loaded.");
-    }
-};
-
-// 4. Combined tracking function for store finder
+// 2. Track store finder clicks
 const trackStoreFinder = (storeName: string, product: Product) => {
-    trackViewContentEvent(storeName, product);
-    trackLeadEvent(storeName, product);
-};
-
-// test
-const testPixel = () => {
-    if (typeof window !== "undefined" && typeof window.fbq === "function") {
-        window.fbq('track', 'CustomEvent', {
-            test_parameter: 'pixel_test',
-            page: 'product_page',
-            timestamp: new Date().toISOString()
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+        // Standard lead generation event
+        window.gtag('event', 'generate_lead', {
+            currency: 'HKD',
+            value: 25.00, // Lower value since it's just interest, not purchase intent
+            items: [{
+                item_id: product.id.toString(),
+                item_name: product.name,
+                item_category: 'Health & Beauty',
+                item_brand: 'Imada',
+                quantity: 1,
+                price: 50.00
+            }]
         });
-        console.log('✅ Test event sent successfully');
-        alert('Test pixel event sent! Check your browser console and Facebook Events Manager.');
+        
+        // Custom store finder event
+        window.gtag('event', 'imada_store_finder_clicked', {
+            store_name: storeName,
+            product_name: product.name,
+            product_id: product.id.toString(),
+            product_capacity: product.capacity,
+            product_conditions: product.conditions.join(', '),
+            site_domain: 'imadahk.com',
+            event_category: 'Store Locator',
+            event_label: `${storeName} Store Finder - ${product.name}`,
+            click_location: 'product_page'
+        });
+        
+        console.log(`✅ Store finder tracked for Imada: ${storeName} - ${product.name}`);
     } else {
-        console.warn('❌ Meta Pixel (fbq) is not loaded');
-        alert('Meta Pixel not found! Check your setup.');
+        console.warn("Google Analytics (gtag) is not loaded.");
     }
 };
 
-
+// 3. Track product page views
+const trackProductView = (product: Product) => {
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+        // Standard e-commerce view item event
+        window.gtag('event', 'view_item', {
+            currency: 'HKD',
+            value: 50.00,
+            items: [{
+                item_id: product.id.toString(),
+                item_name: product.name,
+                item_category: 'Health & Beauty',
+                item_category2: 'Traditional Chinese Medicine',
+                item_brand: 'Imada',
+                quantity: 1,
+                price: 50.00
+            }]
+        });
+        
+        // Custom detailed product view
+        window.gtag('event', 'imada_product_view', {
+            product_name: product.name,
+            product_id: product.id.toString(),
+            product_capacity: product.capacity,
+            product_conditions: product.conditions.join(', '),
+            product_ingredients: product.ingredients.substring(0, 100) + '...', // Truncated for analytics
+            site_domain: 'imadahk.com',
+            page_title: `${product.name} | Imada`,
+            page_location: window.location.href,
+            event_category: 'Product Engagement',
+            event_label: `Product View - ${product.name}`
+        });
+        
+        console.log('✅ Product view tracked for Imada product:', product.name);
+    } else {
+        console.warn("Google Analytics (gtag) is not loaded.");
+    }
+};
 
 export default function ProductPage() {
     const params = useParams();
@@ -259,16 +292,15 @@ export default function ProductPage() {
       }, [params.id]);
   
     // Track ViewContent when page loads
+    // 5. REPLACE your existing useEffect with this:
     useEffect(() => {
-        if (product && typeof window !== "undefined" && typeof window.fbq === "function") {
-            window.fbq('track', 'ViewContent', {
-                content_ids: [product.id.toString()],
-                content_name: product.name,
-                content_type: 'product',
-                content_category: 'Health & Beauty',
-                currency: 'HKD',
-                value: 50.00
-            });
+        if (product) {
+            // Small delay to ensure GA4 is loaded
+            const timer = setTimeout(() => {
+                trackProductView(product);
+            }, 500);
+            
+            return () => clearTimeout(timer);
         }
     }, [product]);
 
@@ -318,21 +350,19 @@ export default function ProductPage() {
                         <div className="flex flex-col gap-6">
 
                             {/* Primary CTA */}
-                            <div className="flex flex-col gap-3">
-                                <Link 
+                            <Link 
                                 href={product.url} 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
                                 className="w-full"
-                                >
+                            >
                                 <button 
                                     className="w-full bg-red-600 text-white text-center rounded-lg py-3 px-6 font-semibold text-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
-                                    onClick={() => trackInitiateCheckoutEvent(product)}
+                                    onClick={() => trackPurchaseIntent(product)}
                                 >
                                     Buy Online Now
                                 </button>
-                                </Link>
-                            </div>
+                            </Link>
 
 
                             {/* section to fix */}
@@ -418,17 +448,7 @@ export default function ProductPage() {
                 <Carousel currentProductId={product.id} />
             </main>
             <Footer/>
-            {/* REMOVE THIS AFTER TESTING */}
-            {process.env.NODE_ENV === 'development' && (
-                <div className="fixed bottom-4 right-4 z-50">
-                    <button 
-                        onClick={testPixel}
-                        className="bg-blue-600 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-700"
-                    >
-                        Test Pixel
-                    </button>
-                </div>
-            )}
+            
         </div>
     );
 }
