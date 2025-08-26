@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Navbar from "@/component/navbar/navbar";
 import Footer from "@/component/footer/footer";
-import { JSX, useEffect, useState } from "react";
+import { JSX, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Carousel from "@/component/product-page/carousel";
 
@@ -22,6 +22,29 @@ type Product = {
     url: string;
     conditions: string[];
 }
+
+type GA4Item = {
+  item_id?: string;
+  item_name?: string;
+  item_category?: string;
+  item_category2?: string;
+  item_brand?: string;
+  quantity?: number;
+  // allow any extra GA4 params you might add later
+  [k: string]: any;
+};
+
+type GA4EventParams = {
+  items?: GA4Item[];
+  transport_type?: "beacon" | "xhr" | "image";
+  // allow any extra GA4 fields
+  [k: string]: any;
+};
+
+// Thin wrapper that bypasses GA3 type restrictions while keeping TS happy
+const gtagEvent = (action: string, params: GA4EventParams = {}) => {
+  (window as any).gtag?.("event", action, params as any);
+};
 
 const products = [
     { id: 1, name: "Imada Seasons Safe Oil", image: "/imada-1.webp", 
@@ -170,138 +193,136 @@ declare global {
   }
 }
 
-// 1. Track "Buy Online Now" clicks
+// 1) "Buy Online Now" clicks
 const trackPurchaseIntent = (product: Product) => {
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        // Standard e-commerce event
-        window.gtag('event', 'begin_checkout', {
-            currency: 'HKD',
-            value: 50.00,
-            items: [{
-                item_id: product.id.toString(),
-                item_name: product.name,
-                item_category: 'Health & Beauty',
-                item_category2: 'Traditional Chinese Medicine',
-                item_brand: 'Imada',
-                quantity: 1,
-                price: 50.00
-            }]
-        });
-        
-        // Custom event for detailed tracking
-        window.gtag('event', 'imada_buy_now_clicked', {
-            product_name: product.name,
-            product_id: product.id.toString(),
-            product_capacity: product.capacity,
-            product_conditions: product.conditions.join(', '),
-            click_location: 'product_page',
-            site_domain: 'imadahk.com',
-            event_category: 'Purchase Intent',
-            event_label: `Buy Now - ${product.name}`
-        });
-        
-        console.log('✅ Purchase intent tracked for Imada product:', product.name);
-    } else {
-        console.warn("Google Analytics (gtag) is not loaded.");
-    }
+  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    // GA4 recommended: begin_checkout (minimal item payload, no prices)
+    
+    
+    gtagEvent("begin_checkout", {
+        items: [{
+            item_id: product.id.toString(),
+            item_name: product.name,
+            item_category: "Health & Beauty",
+            item_category2: "Traditional Chinese Medicine",
+            item_brand: "Imada",
+            quantity: 1,
+        }],
+        transport_type: "beacon",
+    });
+    gtagEvent("imada_buy_now_clicked", {
+        product_name: product.name,
+        product_id: product.id.toString(),
+        product_capacity: product.capacity,
+        product_conditions: product.conditions.join(", "),
+        link_url: product.url,
+        click_location: "product_page",
+        site_domain: typeof window !== "undefined" ? window.location.hostname : "imadahk.com",
+        event_category: "Purchase Intent",
+        event_label: `Buy Now - ${product.name}`,
+        transport_type: "beacon",
+    });
+
+    console.log('✅ Purchase intent tracked:', product.name);
+  } else {
+    console.warn("Google Analytics (gtag) is not loaded.");
+  }
 };
 
-// 2. Track store finder clicks
-const trackStoreFinder = (storeName: string, product: Product) => {
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        // Standard lead generation event
-        window.gtag('event', 'generate_lead', {
-            currency: 'HKD',
-            value: 25.00, // Lower value since it's just interest, not purchase intent
-            items: [{
-                item_id: product.id.toString(),
-                item_name: product.name,
-                item_category: 'Health & Beauty',
-                item_brand: 'Imada',
-                quantity: 1,
-                price: 50.00
-            }]
-        });
-        
-        // Custom store finder event
-        window.gtag('event', 'imada_store_finder_clicked', {
-            store_name: storeName,
-            product_name: product.name,
-            product_id: product.id.toString(),
-            product_capacity: product.capacity,
-            product_conditions: product.conditions.join(', '),
-            site_domain: 'imadahk.com',
-            event_category: 'Store Locator',
-            event_label: `${storeName} Store Finder - ${product.name}`,
-            click_location: 'product_page'
-        });
-        
-        console.log(`✅ Store finder tracked for Imada: ${storeName} - ${product.name}`);
-    } else {
-        console.warn("Google Analytics (gtag) is not loaded.");
-    }
+// 2) Store finder clicks (Watsons / Mannings)
+const trackStoreFinder = (storeName: string, product: Product, linkUrl: string) => {
+  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    // Lead intent (minimal items, no prices)
+    gtagEvent("generate_lead", {
+        items: [{
+            item_id: product.id.toString(),
+            item_name: product.name,
+            item_category: "Health & Beauty",
+            item_brand: "Imada",
+            quantity: 1,
+        }],
+        transport_type: "beacon",
+    });
+
+    gtagEvent("imada_store_finder_clicked", {
+        store_name: storeName,
+        link_url: linkUrl,
+        product_name: product.name,
+        product_id: product.id.toString(),
+        product_capacity: product.capacity,
+        product_conditions: product.conditions.join(", "),
+        site_domain: typeof window !== "undefined" ? window.location.hostname : "imadahk.com",
+        event_category: "Store Locator",
+        event_label: `${storeName} Store Finder - ${product.name}`,
+        click_location: "product_page",
+        transport_type: "beacon",
+    });
+
+    console.log(`✅ Store finder tracked: ${storeName} - ${product.name}`);
+  } else {
+    console.warn("Google Analytics (gtag) is not loaded.");
+  }
 };
 
-// 3. Track product page views
+// 3) Product page views (deduped)
 const trackProductView = (product: Product) => {
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        // Standard e-commerce view item event
-        window.gtag('event', 'view_item', {
-            currency: 'HKD',
-            value: 50.00,
-            items: [{
-                item_id: product.id.toString(),
-                item_name: product.name,
-                item_category: 'Health & Beauty',
-                item_category2: 'Traditional Chinese Medicine',
-                item_brand: 'Imada',
-                quantity: 1,
-                price: 50.00
-            }]
-        });
-        
-        // Custom detailed product view
-        window.gtag('event', 'imada_product_view', {
-            product_name: product.name,
-            product_id: product.id.toString(),
-            product_capacity: product.capacity,
-            product_conditions: product.conditions.join(', '),
-            product_ingredients: product.ingredients.substring(0, 100) + '...', // Truncated for analytics
-            site_domain: 'imadahk.com',
-            page_title: `${product.name} | Imada`,
-            page_location: window.location.href,
-            event_category: 'Product Engagement',
-            event_label: `Product View - ${product.name}`
-        });
-        
-        console.log('✅ Product view tracked for Imada product:', product.name);
-    } else {
-        console.warn("Google Analytics (gtag) is not loaded.");
-    }
+  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    // GA4 view_item (no value/price)
+    gtagEvent("view_item", {
+        items: [{
+            item_id: product.id.toString(),
+            item_name: product.name,
+            item_category: "Health & Beauty",
+            item_category2: "Traditional Chinese Medicine",
+            item_brand: "Imada",
+            quantity: 1,
+        }],
+        transport_type: "beacon",
+    });
+
+    gtagEvent("imada_product_view", {
+        product_name: product.name,
+        product_id: product.id.toString(),
+        product_capacity: product.capacity,
+        product_conditions: product.conditions.join(", "),
+        product_ingredients: product.ingredients.substring(0, 100) + ".",
+        site_domain: typeof window !== "undefined" ? window.location.hostname : "imadahk.com",
+        page_title: `${product.name} | Imada`,
+        page_location: typeof window !== "undefined" ? window.location.href : "",
+        event_category: "Product Engagement",
+        event_label: `Product View - ${product.name}`,
+        transport_type: "beacon",
+    });
+
+
+    console.log('✅ Product view tracked:', product.name);
+  } else {
+    console.warn("Google Analytics (gtag) is not loaded.");
+  }
 };
+
 
 export default function ProductPage() {
     const params = useParams();
     const [product, setProduct] = useState<Product | null>(null); // Initially null to prevent hydration issues
+    const hasSentView = useRef(false);
 
     useEffect(() => {
         if (params.id) {
-          const foundProduct = products.find((p) => p.id.toString() === params.id) || null;
-          setProduct(foundProduct);
+            const foundProduct = products.find((p) => p.id.toString() === params.id) || null;
+            setProduct(foundProduct);
         }
-      }, [params.id]);
+    }, [params.id]);
   
-    // Track ViewContent when page loads
-    // 5. REPLACE your existing useEffect with this:
     useEffect(() => {
-        if (product) {
-            // Small delay to ensure GA4 is loaded
-            const timer = setTimeout(() => {
-                trackProductView(product);
-            }, 500);
-            
-            return () => clearTimeout(timer);
-        }
+    if (!product || hasSentView.current) return;
+
+    const timer = window.setTimeout(() => {
+        trackProductView(product);
+        hasSentView.current = true;
+    }, 400); // tiny delay to ensure GA is ready
+
+    return () => clearTimeout(timer);
     }, [product]);
 
     if (!product) return (
@@ -379,12 +400,18 @@ export default function ProductPage() {
                                 <p className="text-sm text-gray-600 mb-2">Available at these major retailers:</p>
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <Link 
+                                <Link
                                     href="https://www.watsons.com.hk/en/product-categories/c/1?q=:productBrandCode:productBrandCode:109351"
-                                    target="_blank" 
+                                    target="_blank"
                                     rel="noopener noreferrer"
                                     className="group"
-                                    onClick={() => trackStoreFinder("Watsons", product)}
+                                    onClick={() =>
+                                        trackStoreFinder(
+                                        "Watsons",
+                                        product,
+                                        "https://www.watsons.com.hk/en/product-categories/c/1?q=:productBrandCode:productBrandCode:109351"
+                                        )
+                                    }
                                 >
                                     <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
                                     <Image 
@@ -400,12 +427,18 @@ export default function ProductPage() {
                                     </p>
                                 </Link>
 
-                                <Link 
+                                <Link
                                     href="https://www.mannings.com.hk/brands/IMADA?page=1"
-                                    target="_blank" 
+                                    target="_blank"
                                     rel="noopener noreferrer"
                                     className="group"
-                                    onClick={() => trackStoreFinder("Mannings", product)}
+                                    onClick={() =>
+                                        trackStoreFinder(
+                                        "Mannings",
+                                        product,
+                                        "https://www.mannings.com.hk/brands/IMADA?page=1"
+                                        )
+                                    }
                                 >
                                     <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
                                     <Image 
@@ -448,7 +481,6 @@ export default function ProductPage() {
                 <Carousel currentProductId={product.id} />
             </main>
             <Footer/>
-            
         </div>
     );
 }
