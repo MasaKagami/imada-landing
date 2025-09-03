@@ -1,50 +1,42 @@
 "use client";
 
-import React from 'react';
+import React, { JSX, useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "@/component/navbar/navbar";
 import Footer from "@/component/footer/footer";
-import { JSX, useEffect, useState, useRef } from "react";
-import Link from "next/link";
 import Carousel from "@/component/product-page/carousel";
 
+// ---- Types ----
 type Product = {
-    id: number;
-    name: string;
-    image: string;
-    usage: string;
-    function: string;
-    info: string;
-    ingredients: string;
-    notes: string;
-    capacity: string;
-    url: string;
-    conditions: string[];
+  id: number;
+  name: string;
+  image: string;
+  usage: string;
+  function: string;
+  info: string;
+  ingredients: string;
+  notes: string;
+  capacity: string;
+  url: string;
+  conditions: string[];
+};
+
+// ---- fbq wrapper ----
+declare global {
+  interface Window {
+    fbq?: (...args: any[]) => void;
+  }
 }
 
-type GA4Item = {
-  item_id?: string;
-  item_name?: string;
-  item_category?: string;
-  item_category2?: string;
-  item_brand?: string;
-  quantity?: number;
-  // allow any extra GA4 params you might add later
-  [k: string]: any;
+const fbTrack = (eventName: string, params?: Record<string, unknown>) => {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    if (params) window.fbq("track", eventName, params);
+    else window.fbq("track", eventName);
+  }
 };
 
-type GA4EventParams = {
-  items?: GA4Item[];
-  transport_type?: "beacon" | "xhr" | "image";
-  // allow any extra GA4 fields
-  [k: string]: any;
-};
-
-// Thin wrapper that bypasses GA3 type restrictions while keeping TS happy
-const gtagEvent = (action: string, params: GA4EventParams = {}) => {
-  (window as any).gtag?.("event", action, params as any);
-};
 
 const products = [
     { id: 1, name: "Imada Seasons Safe Oil", image: "/imada-1.webp", 
@@ -187,300 +179,211 @@ const conditionIcons: { [key: string]: JSX.Element } = {
     ),
 };
 
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-  }
-}
-
-// 1) "Buy Online Now" clicks
-const trackPurchaseIntent = (product: Product) => {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    // GA4 recommended: begin_checkout (minimal item payload, no prices)
-    
-    
-    gtagEvent("begin_checkout", {
-        items: [{
-            item_id: product.id.toString(),
-            item_name: product.name,
-            item_category: "Health & Beauty",
-            item_category2: "Traditional Chinese Medicine",
-            item_brand: "Imada",
-            quantity: 1,
-        }],
-        transport_type: "beacon",
-    });
-    gtagEvent("imada_buy_now_clicked", {
-        product_name: product.name,
-        product_id: product.id.toString(),
-        product_capacity: product.capacity,
-        product_conditions: product.conditions.join(", "),
-        link_url: product.url,
-        click_location: "product_page",
-        site_domain: typeof window !== "undefined" ? window.location.hostname : "imadahk.com",
-        event_category: "Purchase Intent",
-        event_label: `Buy Now - ${product.name}`,
-        transport_type: "beacon",
-    });
-
-    console.log('✅ Purchase intent tracked:', product.name);
-  } else {
-    console.warn("Google Analytics (gtag) is not loaded.");
-  }
-};
-
-// 2) Store finder clicks (Watsons / Mannings)
-const trackStoreFinder = (storeName: string, product: Product, linkUrl: string) => {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    // Lead intent (minimal items, no prices)
-    gtagEvent("generate_lead", {
-        items: [{
-            item_id: product.id.toString(),
-            item_name: product.name,
-            item_category: "Health & Beauty",
-            item_brand: "Imada",
-            quantity: 1,
-        }],
-        transport_type: "beacon",
-    });
-
-    gtagEvent("imada_store_finder_clicked", {
-        store_name: storeName,
-        link_url: linkUrl,
-        product_name: product.name,
-        product_id: product.id.toString(),
-        product_capacity: product.capacity,
-        product_conditions: product.conditions.join(", "),
-        site_domain: typeof window !== "undefined" ? window.location.hostname : "imadahk.com",
-        event_category: "Store Locator",
-        event_label: `${storeName} Store Finder - ${product.name}`,
-        click_location: "product_page",
-        transport_type: "beacon",
-    });
-
-    console.log(`✅ Store finder tracked: ${storeName} - ${product.name}`);
-  } else {
-    console.warn("Google Analytics (gtag) is not loaded.");
-  }
-};
-
-// 3) Product page views (deduped)
-const trackProductView = (product: Product) => {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    // GA4 view_item (no value/price)
-    gtagEvent("view_item", {
-        items: [{
-            item_id: product.id.toString(),
-            item_name: product.name,
-            item_category: "Health & Beauty",
-            item_category2: "Traditional Chinese Medicine",
-            item_brand: "Imada",
-            quantity: 1,
-        }],
-        transport_type: "beacon",
-    });
-
-    gtagEvent("imada_product_view", {
-        product_name: product.name,
-        product_id: product.id.toString(),
-        product_capacity: product.capacity,
-        product_conditions: product.conditions.join(", "),
-        product_ingredients: product.ingredients.substring(0, 100) + ".",
-        site_domain: typeof window !== "undefined" ? window.location.hostname : "imadahk.com",
-        page_title: `${product.name} | Imada`,
-        page_location: typeof window !== "undefined" ? window.location.href : "",
-        event_category: "Product Engagement",
-        event_label: `Product View - ${product.name}`,
-        transport_type: "beacon",
-    });
-
-
-    console.log('✅ Product view tracked:', product.name);
-  } else {
-    console.warn("Google Analytics (gtag) is not loaded.");
-  }
-};
-
-
+// ---- Component ----
 export default function ProductPage() {
-    const params = useParams();
-    const [product, setProduct] = useState<Product | null>(null); // Initially null to prevent hydration issues
-    const hasSentView = useRef(false);
+  const params = useParams();
+  const [product, setProduct] = useState<Product | null>(null);
+  const hasTrackedView = useRef(false);
 
-    useEffect(() => {
-        if (params.id) {
-            const foundProduct = products.find((p) => p.id.toString() === params.id) || null;
-            setProduct(foundProduct);
-        }
-    }, [params.id]);
-  
-    useEffect(() => {
-    if (!product || hasSentView.current) return;
+  useEffect(() => {
+    if (params.id) {
+      const found = products.find((p) => p.id.toString() === params.id) || null;
+      setProduct(found);
+    }
+  }, [params.id]);
 
-    const timer = window.setTimeout(() => {
-        trackProductView(product);
-        hasSentView.current = true;
-    }, 400); // tiny delay to ensure GA is ready
+  // Track ViewContent once per product
+  useEffect(() => {
+    if (!product || hasTrackedView.current) return;
+    fbTrack("ViewContent", {
+      content_ids: [String(product.id)],
+      content_name: product.name,
+      content_type: "product",
+    });
+    hasTrackedView.current = true;
+  }, [product]);
 
-    return () => clearTimeout(timer);
-    }, [product]);
-
-    if (!product) return (
-        <div className="w-screen min-h-screen">
-            <Navbar/>
-                <div className="h-full w-full justify-center items-center">
-                    <p className="text-center mt-10">Loading product...</p>
-                </div>
-        </div>
-    ); // Prevents hydration mismatch
-  
+  if (!product) {
     return (
-        <div className="w-screen min-h-screen">
-            <Navbar/>
-            <main className="w-full max-w-[90%] md:max-w-[80%] mt-10 mb-20 m-auto flex flex-col items-center ">
-                <div className="flex md:flex-row flex-col justify-center w-full mb-6">
-                    <div className="w-full md:w-1/2 flex justify-center items-center">
-                        <div className="relative w-full max-w-lg ">
-                            <Image 
-                                src={product.image} 
-                                alt={product.name} 
-                                width={400} 
-                                height={400} 
-                                className="w-full h-auto object-contain bg-white"
-                                priority={true}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col w-full md:w-1/2 gap-8">
-                        <div className="flex flex-col gap-2">
-                            <h1 className="text-4xl font-bold">{product.name}</h1>
-                            <p className="text-sm text-gray-700">{product.capacity}</p>
-                            <p className="text-sm font-normal whitespace-pre-line">{product.usage}</p>
-                    
-                            <div className="flex items-center gap-4 mt-1">
-                                {product.conditions.map((condition: string) => (
-                                    <div key={condition} className="flex flex-col items-center gap-1">
-                                    {conditionIcons[condition]}
-                                    <p className="text-xs text-black">{condition.replace("_", " ")}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        
-                        <div className="flex flex-col gap-6">
-
-                            {/* Primary CTA */}
-                            <Link 
-                                href={product.url} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="w-full"
-                            >
-                                <button 
-                                    className="w-full bg-red-600 text-white text-center rounded-lg py-3 px-6 font-semibold text-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
-                                    onClick={() => trackPurchaseIntent(product)}
-                                >
-                                    Buy Online Now
-                                </button>
-                            </Link>
-
-
-                            {/* section to fix */}
-                            {/* Divider */}
-                            <div className="flex items-center gap-4">
-                                <div className="flex-1 h-px bg-gray-300"></div>
-                                <span className="text-gray-500 font-medium">OR</span>
-                                <div className="flex-1 h-px bg-gray-300"></div>
-                            </div>
-
-                            {/* Store Locator Section */}
-                            <div className="flex flex-col gap-4">
-                                <h3 className="text-lg font-semibold text-gray-800">Find in Stores</h3>
-                                <p className="text-sm text-gray-600 mb-2">Available at these major retailers:</p>
-                                
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <Link
-                                    href="https://www.watsons.com.hk/en/product-categories/c/1?q=:productBrandCode:productBrandCode:109351"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group"
-                                    onClick={() =>
-                                        trackStoreFinder(
-                                        "Watsons",
-                                        product,
-                                        "https://www.watsons.com.hk/en/product-categories/c/1?q=:productBrandCode:productBrandCode:109351"
-                                        )
-                                    }
-                                >
-                                    <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
-                                    <Image 
-                                        alt="Watsons" 
-                                        src="/watsonsLogo.png" 
-                                        width={150} 
-                                        height={40}
-                                        className="object-contain"
-                                    />
-                                    </div>
-                                    <p className="text-xs text-center mt-2 text-gray-600 group-hover:text-red-600 transition-colors">
-                                    Find nearest Watsons
-                                    </p>
-                                </Link>
-
-                                <Link
-                                    href="https://www.mannings.com.hk/brands/IMADA?page=1"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group"
-                                    onClick={() =>
-                                        trackStoreFinder(
-                                        "Mannings",
-                                        product,
-                                        "https://www.mannings.com.hk/brands/IMADA?page=1"
-                                        )
-                                    }
-                                >
-                                    <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
-                                    <Image 
-                                        alt="Mannings" 
-                                        src="/manningsLogo.png" 
-                                        width={150} 
-                                        height={40}
-                                        className="object-contain"
-                                    />
-                                    </div>
-                                    <p className="text-xs text-center mt-2 text-gray-600 group-hover:text-red-600 transition-colors">
-                                    Find nearest Mannings
-                                    </p>
-                                </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div className="flex flex-col gap-3 border-t-2 border-b-2 pt-6 pb-6">
-                    <h1 className="text-2xl font-bold">Product Details</h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
-                        <div className="flex flex-col gap-1">
-                            <h1 className="font-semibold">How to Use</h1>
-                            <h1 className="text-base whitespace-pre-line">{product.notes}</h1>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <h1 className="font-semibold">Main Ingredients</h1>
-                            <p className="text-base">{product.ingredients}</p>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <h1 className="font-semibold">Capacity</h1>
-                            <p className="text-base">{product.capacity}</p>
-                        </div>
-                    </div>
-                </div>
-                {/* component to show other product */}
-                <Carousel currentProductId={product.id} />
-            </main>
-            <Footer/>
+      <div className="w-screen min-h-screen">
+        <Navbar />
+        <div className="h-full w-full flex justify-center items-center">
+          <p className="text-center mt-10">Loading product...</p>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div className="w-full min-h-screen">
+      <Navbar />
+      <main className="w-full max-w-[90%] md:max-w-[80%] mt-10 mb-20 m-auto flex flex-col items-center">
+        <div className="flex md:flex-row flex-col justify-center w-full mb-6">
+          {/* Image */}
+          <div className="w-full md:w-1/2 flex justify-center items-center">
+            <div className="relative w-full max-w-lg">
+              <Image
+                src={product.image}
+                alt={product.name}
+                width={400}
+                height={400}
+                className="w-full h-auto object-contain bg-white"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* Info */}
+          <div className="flex flex-col w-full md:w-1/2 gap-8">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-4xl font-bold">{product.name}</h1>
+              <p className="text-sm text-gray-700">{product.capacity}</p>
+              <p className="text-sm font-normal whitespace-pre-line">
+                {product.usage}
+              </p>
+
+              {/* Conditions with icons */}
+              <div className="flex items-center gap-4 mt-1">
+                {product.conditions.map((condition: string) => (
+                  <div
+                    key={condition}
+                    className="flex flex-col items-center gap-1"
+                  >
+                    {conditionIcons[condition]}
+                    <p className="text-xs text-black">
+                      {condition.replace("_", " ")}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-6">
+              {/* Buy Online */}
+              <Link
+                href={product.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full"
+                onClick={() =>
+                  fbTrack("Lead", {
+                    content_ids: [String(product.id)],
+                    content_name: product.name,
+                    content_type: "product",
+                    link_url: product.url,
+                  })
+                }
+              >
+                <button className="w-full bg-red-600 text-white text-center rounded-lg py-3 px-6 font-semibold text-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]">
+                  Buy Online Now
+                </button>
+              </Link>
+
+              {/* Divider */}
+              <div className="flex items-center gap-4">
+                <div className="flex-1 h-px bg-gray-300"></div>
+                <span className="text-gray-500 font-medium">OR</span>
+                <div className="flex-1 h-px bg-gray-300"></div>
+              </div>
+
+              {/* Store Links */}
+              <div className="flex flex-col gap-4">
+                <h3 className="text-lg font-semibold text-gray-800">
+                  Find in Stores
+                </h3>
+                <p className="text-sm text-gray-600 mb-2">
+                  Available at these major retailers:
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Link
+                    href="https://www.watsons.com.hk/en/store-finder"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group"
+                    onClick={() =>
+                      fbTrack("Lead", {
+                        store_name: "Watsons",
+                        content_ids: [String(product.id)],
+                        content_name: product.name,
+                        content_type: "product",
+                        link_url:
+                          "https://www.watsons.com.hk/en/store-finder",
+                      })
+                    }
+                  >
+                    <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
+                      <Image
+                        alt="Watsons"
+                        src="/watsonsLogo.png"
+                        width={150}
+                        height={40}
+                        className="object-contain"
+                      />
+                    </div>
+                    <p className="text-xs text-center mt-2 text-gray-600 group-hover:text-red-600 transition-colors">
+                      Find nearest Watsons
+                    </p>
+                  </Link>
+
+                  <Link
+                    href="https://www.mannings.com.hk/store-finder"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group"
+                    onClick={() =>
+                      fbTrack("Lead", {
+                        store_name: "Mannings",
+                        content_ids: [String(product.id)],
+                        content_name: product.name,
+                        content_type: "product",
+                        link_url:
+                          "https://www.mannings.com.hk/store-finder",
+                      })
+                    }
+                  >
+                    <div className="flex items-center justify-center p-4 border-2 border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition-all duration-200 bg-white group-hover:bg-gray-50">
+                      <Image
+                        alt="Mannings"
+                        src="/manningsLogo.png"
+                        width={150}
+                        height={40}
+                        className="object-contain"
+                      />
+                    </div>
+                    <p className="text-xs text-center mt-2 text-gray-600 group-hover:text-red-600 transition-colors">
+                      Find nearest Mannings
+                    </p>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Product Details */}
+        <div className="flex flex-col gap-3 border-t-2 border-b-2 pt-6 pb-6">
+          <h1 className="text-2xl font-bold">Product Details</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
+            <div className="flex flex-col gap-1">
+              <h1 className="font-semibold">How to Use</h1>
+              <h1 className="text-base whitespace-pre-line">{product.notes}</h1>
+            </div>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-semibold">Main Ingredients</h1>
+              <p className="text-base">{product.ingredients}</p>
+            </div>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-semibold">Capacity</h1>
+              <p className="text-base">{product.capacity}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Carousel of other products */}
+        <Carousel currentProductId={product.id} />
+      </main>
+      <Footer />
+    </div>
+  );
 }

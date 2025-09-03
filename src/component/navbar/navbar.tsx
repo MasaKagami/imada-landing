@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Navbar = () => {
     return(
-        <nav className="w-screen border-b-2 border-gray-300">
+        <nav className="w-full border-b-2 border-gray-300">
             <div className="w-full max-w-[95%] md:m-auto flex justify-between items-center">
                 {/* Logo Section */}
                 <Link href='/'>

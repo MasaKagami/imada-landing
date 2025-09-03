@@ -43,7 +43,7 @@ export default function Carousel({ currentProductId }: { currentProductId: numbe
           style={{ transform: `translateX(-${startIndex * 25}%)` }}>
           {filteredProducts.concat(filteredProducts).map((product, index) => (
             <div key={index} className="w-1/4 flex-shrink-0 p-4">
-              <div className="border border-gray-300 p-4 flex flex-col items-center">
+              <div className="border border-gray-300 p-4 flex flex-col items-center h-full justify-between">
                 <Image src={product.image} alt={product.name} width={200} height={200} className="rounded-lg" />
                 <p className="font-medium mt-2 text-center">{product.name}</p>
                 <Link href={product.url}>
@@ -61,7 +61,7 @@ export default function Carousel({ currentProductId }: { currentProductId: numbe
           style={{ transform: `translateX(-${startIndex * 50}%)` }}>
           {filteredProducts.concat(filteredProducts).map((product, index) => (
             <div key={index} className="w-1/2 flex-shrink-0 p-2">
-              <div className="border border-gray-300 p-4 flex flex-col items-center">
+              <div className="border border-gray-300 p-4 flex flex-col items-center h-full justify-between">
                 <Image src={product.image} alt={product.name} width={200} height={200} className="rounded-lg" />
                 <p className="font-medium mt-1 text-sm text-center">{product.name}</p>
                 <Link href={product.url}>

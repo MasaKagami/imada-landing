@@ -21,7 +21,7 @@ const Landing = () => {
                 <h1 className="text-3xl font-bold">Our Products</h1>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-6">
                     {products.map((product) => (
-                        <div key={product.id} className="flex flex-col border-gray-300 border p-4 gap-2">
+                        <div key={product.id} className="flex flex-col border-gray-300 border p-4 gap-2 h-full justify-between">
                             <Image src={product.image} alt={product.name} width={300} height={0} style={{height:"auto"}}/>
                             <p className="font-medium">{product.name}</p>
                             <Link href={`/product/${product.id}`} className="w-full">
